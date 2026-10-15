@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Big Fish Darts Academy | Darts Training for Players and Academies</title>
+  <meta name="description" content="Make every practice count. AI throw analysis, daily tasks and progress tracking for players, and a branded academy app for coaches.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#243772">
+  <link rel="icon" type="image/webp" href="img/logos/academy-crest-160.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap">
+  <style>
+    /* Same system as the League site: header + tabs, one tab at a time.
+       An audience switch (players / coaches) changes headlines, screens and features. */
+    :root {
+      --rhino: #243772; --navy: #1b2b56; --sapphire: #1143d4; --sapphire-dark: #0d36ad;
+      --grey: #f2f2f2; --white: #ffffff;
+      --ink: #1b2b56; --muted: #556081; --line: #dfe3ec; --soft: #eaf0fd; --soft-2: #f6f8fc;
+      --ok: #0b7a46;
+      --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --r: 12px;
+      color-scheme: light;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--body); font-size: 16px; line-height: 1.55; color: var(--ink); background: var(--grey); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: var(--sapphire); }
+    button { font: inherit; color: inherit; }
+    :focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; border-radius: 6px; }
+    .wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding-inline: 20px; }
+    .eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sapphire); }
+    h1, h2, h3 { margin: 0; line-height: 1.06; letter-spacing: -0.01em; text-wrap: balance; }
+    h1 { font-size: clamp(38px, 5vw, 64px); font-weight: 800; }
+    h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 800; }
+    h3 { font-size: 19px; font-weight: 700; }
+    .lede { margin: 14px 0 0; font-size: 19px; color: var(--muted); max-width: 34em; }
+    .small { font-size: 13px; color: var(--muted); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 20px; border: 0; border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; white-space: nowrap; transition: background-color .15s, border-color .15s; }
+    .btn-primary { background: var(--sapphire); color: #fff; } .btn-primary:hover { background: var(--sapphire-dark); color: #fff; }
+    .btn-soft { background: var(--soft); color: var(--navy); } .btn-soft:hover { background: #dbe5fb; }
+    .btn-line { background: #fff; color: var(--navy); border: 1.5px solid var(--line); } .btn-line:hover { border-color: var(--navy); }
+    .btn-big { min-height: 56px; padding: 0 28px; font-size: 17px; }
+    .btn-block { width: 100%; }
+    .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+
+    /* Header */
+    .head { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+    .headbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 72px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+    .brand img { width: 50px; }
+    .brand b { display: block; font-size: 19px; font-weight: 800; letter-spacing: 0.02em; line-height: 1; }
+    .brand span span { display: block; margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; color: var(--muted); }
+    .head-actions { display: flex; align-items: center; gap: 8px; }
+    .tabs { display: flex; gap: 4px; border-top: 1px solid var(--line); }
+    .tabs [role="tab"] { flex: 1 0 auto; min-height: 54px; padding: 0 22px; border: 0; background: none; font-weight: 700; font-size: 16px; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; }
+    .tabs [role="tab"]:hover { color: var(--ink); }
+    .tabs [role="tab"][aria-selected="true"] { color: var(--sapphire); border-bottom-color: var(--sapphire); }
+
+    /* Audience switch */
+    .audience { display: inline-grid; grid-template-columns: auto auto; gap: 10px; margin-top: 28px; }
+    .audience button { min-height: 50px; padding: 0 26px; border: 0; border-radius: 10px; background: #e3e7f0; color: var(--muted); font-weight: 700; font-size: 16px; cursor: pointer; }
+    .audience button[aria-pressed="true"] { background: var(--navy); color: #fff; }
+
+    main { padding-block: 0 64px; }
+    [role="tabpanel"][hidden], [data-aud][hidden] { display: none; }
+    .panel, [data-aud] { animation: fade .2s ease; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--r); }
+    .chip { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: 6px; background: var(--soft); color: var(--sapphire); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .chip-grey { background: #eceff4; color: var(--muted); }
+
+    /* ---------- Overview ---------- */
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; margin-top: 32px; }
+    .checks { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--muted); }
+    .checks li::before { content: "✓ "; color: var(--ok); font-weight: 800; }
+    .stage { position: relative; min-height: 470px; border-radius: 16px; background: var(--soft); display: flex; align-items: center; justify-content: center; padding: 28px; }
+    .phone { width: 210px; border-radius: 28px; border: 8px solid #0e1630; background: #0e1630; overflow: hidden; box-shadow: 0 22px 44px -18px rgba(14,22,48,0.55); }
+    .tablet { width: 300px; border-radius: 16px; border: 8px solid #0e1630; background: #0e1630; overflow: hidden; box-shadow: 0 22px 44px -18px rgba(14,22,48,0.55); }
+    .float { position: absolute; display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 54px; padding: 0 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 8px 20px -10px rgba(14,22,48,0.3); transition: border-color .15s; }
+    .float:hover, .tile:hover { border-color: var(--sapphire); }
+    .float svg, .tile svg { flex: none; width: 17px; height: 17px; color: var(--sapphire); }
+    .f1 { left: 4%; top: 14%; } .f2 { right: 4%; top: 46%; } .f3 { left: 4%; bottom: 12%; }
+    .caption { margin-top: 10px; text-align: center; }
+    .tilerow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+    .tile { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 62px; padding: 0 18px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-weight: 700; font-size: 16px; text-align: left; cursor: pointer; transition: border-color .15s; }
+    .tile small { display: block; font-weight: 600; font-size: 12px; color: var(--muted); }
+    .swatches { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 22px; }
+    .swatches > span { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; color: var(--muted); margin-right: 6px; }
+    .sw { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px var(--line); cursor: pointer; }
+    .sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--sapphire); }
+    .sw-name { font-size: 14px; font-weight: 700; }
+
+    .loop { margin-top: 44px; }
+    .loop-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+    .loop-step { display: flex; gap: 14px; align-items: center; padding: 14px; text-align: left; cursor: pointer; }
+    .loop-step img { width: 64px; height: 110px; object-fit: cover; object-position: top; border-radius: 8px; border: 3px solid #0e1630; flex: none; }
+    .loop-step b { display: block; font-size: 17px; }
+    .loop-step span { font-size: 14px; color: var(--muted); }
+    .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+    .day { padding: 12px; min-height: 120px; }
+    .day b { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .day strong { display: block; margin-top: 8px; font-size: 15px; line-height: 1.3; }
+    .day span { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); }
+    .day.you { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .day.you b, .day.you span { color: #c9d1e8; }
+
+    /* ---------- Explore features ---------- */
+    .explore { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1fr); gap: 18px; align-items: stretch; margin-top: 24px; }
+    .tiles { display: flex; flex-direction: column; gap: 12px; }
+    .tiles .tile { min-height: 64px; }
+    .phone-stage { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 18px; padding: 22px; border-radius: var(--r); background: var(--soft); }
+    .phone-stage .phone { width: min(220px, 100%); }
+    .more { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .more .btn { min-width: 240px; }
+
+    /* ---------- Watch ---------- */
+    .watch { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin-top: 24px; align-items: center; }
+    .story { position: relative; display: flex; align-items: center; justify-content: center; min-height: 520px; border-radius: 16px; background: var(--rhino); padding: 24px; }
+    .story img { max-height: 470px; width: auto; border-radius: 18px; border: 6px solid #0e1630; }
+    .story img.wide { border-radius: 12px; max-width: 100%; }
+    .story .tag { position: absolute; top: 14px; left: 14px; }
+    .steps { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .steps button { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 14px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; text-align: left; cursor: pointer; }
+    .steps button i { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #e3e7f0; font-style: normal; font-weight: 800; }
+    .steps button[aria-pressed="true"] { border-color: var(--sapphire); box-shadow: inset 4px 0 0 var(--sapphire); }
+    .steps button[aria-pressed="true"] i { background: var(--sapphire); color: #fff; }
+    .steps b { display: block; } .steps span { font-size: 14px; color: var(--muted); }
+    .navrow { display: flex; gap: 10px; margin-top: 16px; }
+    .soon { margin-top: 16px; padding: 14px 16px; border-radius: 10px; background: #fff7e0; color: #6a4e00; font-size: 14px; }
+
+    /* Dialogs */
+    dialog { border: 0; padding: 0; border-radius: 16px; width: 100%; max-width: min(880px, calc(100vw - 24px)); max-height: calc(100vh - 32px); color: var(--ink); box-shadow: 0 30px 80px rgba(14,22,48,0.45); }
+    dialog::backdrop { background: rgba(14,22,48,0.6); }
+    dialog[open] { animation: fade .18s ease; }
+    .dlg-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; background: #fff; border-bottom: 1px solid var(--line); }
+    .back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 6px; border: 0; background: none; color: var(--sapphire); font-weight: 700; cursor: pointer; }
+    .x { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+    .feat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 24px; }
+    .feat .benefit { margin: 8px 0 0; font-size: 19px; font-weight: 700; }
+    .feat .desc { margin: 8px 0 0; color: var(--muted); }
+    .feat ul { margin: 16px 0 0; padding-left: 20px; } .feat li { margin: 6px 0; }
+    .feat .shots { display: flex; gap: 10px; justify-content: center; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
+    .feat .shots img { width: 190px; flex: none; border-radius: 16px; border: 5px solid #0e1630; cursor: zoom-in; }
+    .feat .shots img.wide { width: 280px; border-radius: 10px; }
+    .list { margin: 0; padding: 0; list-style: none; }
+    .list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .list li:first-child { border-top: 0; }
+    .list p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+    ol.howto { margin: 0; padding-left: 20px; } ol.howto li { margin: 8px 0; }
+    dialog.lightbox { max-width: min(560px, calc(100vw - 24px)); background: #0e1630; }
+    dialog.lightbox img { width: 100%; max-height: 86vh; object-fit: contain; }
+    dialog.lightbox .x { position: absolute; top: 10px; right: 10px; }
+
+    footer { background: var(--navy); color: #c9d1e8; font-size: 14px; }
+    footer .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; padding-block: 22px; }
+    footer a { color: #c9d1e8; } footer a:hover { color: #fff; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .bottom-nav { display: none; }
+
+    @media (max-width: 900px) {
+      .hero, .watch { grid-template-columns: minmax(0, 1fr); }
+      .stage { min-height: 0; flex-direction: column; gap: 14px; }
+      .float { position: static; width: 100%; }
+      .floats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; }
+      .tilerow, .loop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .week { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .explore { grid-template-columns: minmax(0, 1fr); }
+      .explore .phone-stage { order: -1; }
+      .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tiles .tile { min-height: 58px; font-size: 15px; padding: 0 14px; }
+      .feat { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+      .story { min-height: 0; }
+      .story img { max-height: 400px; }
+    }
+    @media (min-width: 901px) { .floats { display: contents; } }
+    @media (max-width: 640px) {
+      .tabs { display: none; }
+      .head-actions .btn-soft { display: none; }
+      .brand img { width: 42px; }
+      main { padding-block: 0 96px; }
+      .audience { display: grid; width: 100%; margin-top: 16px; }
+      .audience button { padding: 0 10px; font-size: 15px; }
+      .hero { margin-top: 20px; gap: 22px; }
+      .btn-big { width: 100%; }
+      .tilerow, .loop-grid { grid-template-columns: minmax(0, 1fr); }
+      .week { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tablet { width: 240px; }
+      dialog { max-width: 100vw; max-height: 100vh; height: 100%; border-radius: 0; margin: 0; }
+      .feat .shots { justify-content: flex-start; }
+      .bottom-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: #fff; border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; border: 0; background: none; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; }
+      .bottom-nav svg { width: 22px; height: 22px; }
+      .bottom-nav button[aria-current="true"] { color: var(--sapphire); }
+      footer { padding-bottom: 64px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap headbar">
+    <a class="brand" href="#overview" data-go="overview" aria-label="Big Fish Darts Academy home">
+      <img src="img/logos/academy-crest-160.webp" width="50" height="39" alt="">
+      <span><b>BIG FISH DARTS</b><span>ACADEMY</span></span>
+    </a>
+    <div class="head-actions">
+      <button class="btn btn-soft" type="button" data-go="watch">Watch the app ▷</button>
+      <button class="btn btn-line" type="button" data-open="dlg-login">Login ↗</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="tabs" role="tablist" aria-label="Big Fish Darts Academy">
+      <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Overview</button>
+      <button role="tab" id="tab-features" aria-controls="features" aria-selected="false" tabindex="-1">Explore features</button>
+      <button role="tab" id="tab-watch" aria-controls="watch" aria-selected="false" tabindex="-1">Watch the app</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="audience" role="group" aria-label="Who is this for?">
+    <button type="button" data-audience="players" aria-pressed="true">For players</button>
+    <button type="button" data-audience="coaches" aria-pressed="false">For coaches &amp; academies</button>
+  </div>
+
+  <!-- ======================= OVERVIEW ======================= -->
+  <section id="overview" class="panel" role="tabpanel" aria-labelledby="tab-overview">
+
+    <!-- Players -->
+    <div data-aud="players">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Your next step to a better game</p>
+          <h1 style="margin-top: 14px">Make every practice count.</h1>
+          <p class="lede">Understand your throw. Get personalised daily tasks. See your progress.</p>
+          <div style="margin-top: 28px"><a class="btn btn-primary btn-big" href="https://apps.apple.com/us/app/big-fish-darts-academy/id6762966870" target="_blank" rel="noopener">Start your 7-day trial →</a></div>
+          <ul class="checks"><li>No payment details</li><li>iOS &amp; Android</li></ul>
+        </div>
+        <div>
+          <div class="stage">
+            <div class="phone"><img src="img/app/ai-summary.webp" alt="Your Performance screen: AI summary of a player's throw with a score of 55"></div>
+            <div class="floats">
+              <button class="float f1" type="button" data-feature="ai">AI throw analysis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+              <button class="float f2" type="button" data-feature="plan">Daily tasks <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+              <button class="float f3" type="button" data-feature="progress">See your progress <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tilerow" data-tiles="ai daily games progress"></div>
+
+      <div class="loop">
+        <h2>Assess. Practise. Review. Repeat.</h2>
+        <div class="loop-grid">
+          <button class="card loop-step" type="button" data-feature="ai"><img src="img/app/live-scan.webp" alt=""><span><b>Assess</b><span>Record your throw for AI analysis.</span></span></button>
+          <button class="card loop-step" type="button" data-feature="daily"><img src="img/app/train.webp" alt=""><span><b>Practise</b><span>Daily challenges and training games.</span></span></button>
+          <button class="card loop-step" type="button" data-feature="progress"><img src="img/app/progress.webp" alt=""><span><b>Review</b><span>Rating, skills and trends over time.</span></span></button>
+          <button class="card loop-step" type="button" data-feature="plan"><img src="img/app/weekly-plan.webp" alt=""><span><b>Repeat</b><span>A new plan built around your weak areas.</span></span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coaches -->
+    <div data-aud="coaches" hidden>
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Your players. Your identity.</p>
+          <h1 style="margin-top: 14px">Your academy.<br>Your app.<br>Your colours.</h1>
+          <p class="lede">Keep players improving through the six days between sessions.</p>
+          <div style="margin-top: 28px"><button class="btn btn-primary btn-big" type="button" data-open="dlg-create">Create your academy app →</button></div>
+          <div class="swatches" role="group" aria-label="Try an academy style">
+            <span>TRY A STYLE</span>
+            <button class="sw" type="button" aria-pressed="true" data-style="kendal" style="background:#0f5b45" aria-label="Kendal Youth style"></button>
+            <button class="sw" type="button" aria-pressed="false" data-style="rubery" style="background:#c8673f" aria-label="Rubery style"></button>
+            <button class="sw" type="button" aria-pressed="false" data-style="pendle" style="background:#c9a92c" aria-label="Pendle Youth style"></button>
+            <button class="sw" type="button" aria-pressed="false" data-style="shepperton" style="background:#7a1c24" aria-label="Shepperton style"></button>
+            <button class="sw" type="button" aria-pressed="false" data-style="bullseye" style="background:#c4302b" aria-label="Bullseye style"></button>
+            <span class="sw-name" id="sw-name">Kendal Youth</span>
+          </div>
+        </div>
+        <div>
+          <div class="stage">
+            <div class="tablet"><img id="style-img" src="img/brand/kendal.webp" alt="The app in Kendal Youth Darts Academy's colours"></div>
+            <div class="floats">
+              <button class="float f1" type="button" data-feature="brand">Make it yours <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+              <button class="float f2" type="button" data-feature="cplan">Set weekly plans <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+              <button class="float f3" type="button" data-feature="follow">Follow every player <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+            </div>
+          </div>
+          <p class="small caption">Genuine app screenshots in academy colours.</p>
+        </div>
+      </div>
+      <div class="tilerow" data-tiles="brand cplan follow howai"></div>
+
+      <div class="loop">
+        <h2>The six days between sessions</h2>
+        <p class="lede" style="margin-top: 8px">You coach once a week. The app keeps every player practising the rest of it.</p>
+        <div class="week">
+          <div class="card day you"><b>Day 1</b><strong>Your session</strong><span>Coach, then set the week's plan.</span></div>
+          <div class="card day"><b>Day 2</b><strong>Doubles Lockdown</strong><span>Doubles across the board</span></div>
+          <div class="card day"><b>Day 3</b><strong>Consistency Ladder</strong><span>Consistent scores</span></div>
+          <div class="card day"><b>Day 4</b><strong>Checkout Builder</strong><span>Finishing on a double</span></div>
+          <div class="card day"><b>Day 5</b><strong>Bob's 27</strong><span>Doubles under pressure</span></div>
+          <div class="card day"><b>Day 6</b><strong>Around the Clock</strong><span>Minimal misses</span></div>
+          <div class="card day"><b>Day 7</b><strong>Back with you</strong><span>See the week's progress.</span></div>
+        </div>
+        <p class="small" style="margin-top: 8px">Example week taken from a real AI weekly plan in the app.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= EXPLORE FEATURES ======================= -->
+  <section id="features" class="panel" role="tabpanel" aria-labelledby="tab-features" hidden>
+    <div style="margin-top: 32px">
+      <p class="eyebrow" id="feat-eyebrow">Built for players</p>
+      <h1 style="margin-top: 10px">Tap a feature. See it work.</h1>
+    </div>
+    <div class="explore">
+      <div class="tiles" id="tiles-left"></div>
+      <div class="phone-stage">
+        <div class="phone"><img id="feat-phone" src="img/app/home.webp" alt="Big Fish Darts Academy app home screen"></div>
+        <button class="btn btn-primary btn-block" type="button" data-go="watch">▷ Watch the app</button>
+      </div>
+      <div class="tiles" id="tiles-right"></div>
+    </div>
+    <div class="more" id="more"></div>
+  </section>
+
+  <!-- ======================= WATCH ======================= -->
+  <section id="watch" class="panel" role="tabpanel" aria-labelledby="tab-watch" hidden>
+    <div class="watch">
+      <div>
+        <p class="eyebrow" id="watch-eyebrow">For players</p>
+        <h1 style="margin-top: 10px" id="watch-title">From one throw to real progress.</h1>
+        <div class="steps" id="steps"></div>
+        <div class="navrow"><button class="btn btn-line" type="button" id="prev">← Previous</button><button class="btn btn-primary" type="button" id="next">Next →</button></div>
+        <p class="soon">The short explainer film with real app footage will play here once it's ready.</p>
+      </div>
+      <div class="story" aria-live="polite"><span class="chip tag" id="story-tag">Step 1 of 4</span><img id="story-img" src="img/app/live-scan.webp" alt=""></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>© 2026 Bigfish Darts Academy · <a href="https://www.bigfishdarts.com/">bigfishdarts.com</a></span>
+    <nav aria-label="Footer">
+      <a href="https://bigfishdartsleague.com/privacy-policy/">Privacy</a>
+      <a href="https://bigfishdartsleague.com/terms-conditions/">Terms</a>
+      <a href="https://www.instagram.com/bigfishdartsleague/">Instagram</a>
+      <a href="https://www.facebook.com/people/Big-Fish-Darts/61577716138135/">Facebook</a>
+      <a href="https://www.youtube.com/channel/UCSxT7PgtQ6lNUuAB854ubFQ">YouTube</a>
+    </nav>
+  </div>
+</footer>
+
+<nav class="bottom-nav" aria-label="Sections">
+  <button type="button" data-go="overview" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Overview</button>
+  <button type="button" data-go="features"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Features</button>
+  <button type="button" data-go="watch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg>Watch</button>
+  <button type="button" data-open="dlg-app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Get the app</button>
+</nav>
+
+<!-- ======================= Dialogs ======================= -->
+<dialog id="dlg-feature" aria-labelledby="feat-t">
+  <div class="dlg-top"><button class="back" type="button" data-close>← Back to features</button><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div class="feat" id="feat-body"></div>
+</dialog>
+
+<dialog id="dlg-app" aria-labelledby="app-t" style="max-width: 460px">
+  <div class="dlg-top"><h2 id="app-t" style="font-size: 22px">Get Big Fish Darts Academy</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div style="padding: 20px; display: grid; gap: 10px">
+    <a class="btn btn-primary" href="https://apps.apple.com/us/app/big-fish-darts-academy/id6762966870" target="_blank" rel="noopener">Download on the App Store ↗</a>
+    <button class="btn btn-line" type="button" disabled>Google Play link to be added</button>
+    <p class="small" style="margin: 4px 0 0">7-day free trial. No payment details needed to start.</p>
+  </div>
+</dialog>
+
+<dialog id="dlg-login" aria-labelledby="login-t" style="max-width: 520px">
+  <div class="dlg-top"><h2 id="login-t" style="font-size: 22px">Login</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div style="padding: 20px">
+    <p style="margin: 0 0 6px; color: var(--muted)">Web logins are coming soon. Players and coaches use the Big Fish Darts Academy app.</p>
+    <ul class="list">
+      <li><div><h3>Player login</h3><p>Your plan, sessions and progress.</p></div><span class="chip chip-grey">Coming soon</span></li>
+      <li><div><h3>Coach login</h3><p>Your academy, players and tasks.</p></div><span class="chip chip-grey">Coming soon</span></li>
+    </ul>
+    <button class="btn btn-primary btn-block" type="button" data-swap="dlg-app" style="margin-top: 12px">Open the app instead</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-create" aria-labelledby="create-t" style="max-width: 560px">
+  <div class="dlg-top"><h2 id="create-t" style="font-size: 22px">Create your academy app</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div style="padding: 22px">
+    <ol class="howto">
+      <li>Download Big Fish Darts Academy.</li>
+      <li>Set up your academy as a coach.</li>
+      <li>Add your academy name and logo. Colours are taken from your logo.</li>
+      <li>Invite players with your code. They see your branding straight away.</li>
+    </ol>
+    <div style="display: grid; gap: 10px; margin-top: 18px">
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/big-fish-darts-academy/id6762966870" target="_blank" rel="noopener">Download on the App Store ↗</a>
+      <a class="btn btn-line" href="mailto:info@bigfishdartsleague.com?subject=Big%20Fish%20Darts%20Academy%20for%20my%20academy">Talk to us first</a>
+    </div>
+    <p class="small" style="margin: 12px 0 0">Email: <span style="user-select: all">info@bigfishdartsleague.com</span></p>
+  </div>
+</dialog>
+
+<dialog id="lightbox" class="lightbox" aria-label="Enlarged image">
+  <button class="x" type="button" data-close aria-label="Close">×</button>
+  <img src="" alt="">
+</dialog>
+
+<script>
+/* ---------- Features (content taken from the real app screens) ---------- */
+const F = {
+  ai: { t: 'AI throw analysis', b: 'See what your throw is really doing.', d: 'Record a short video and get a coaching report on your technique.', s: ['live-scan', 'ai-summary', 'ai-improve', 'frame-windup'], l: ['Record 3 to 10 throws on your phone', 'Strengths and areas to improve, from stance to follow-through', 'Frame-by-frame feedback on your wind-up and release'] },
+  pro: { t: 'Pro comparison', b: 'Find the pro whose style is closest to yours.', d: 'Your key metrics side by side with professional throwing styles.', s: ['pro-metrics', 'pro-matches'], l: ['Elbow stability, release timing, follow-through and tempo', 'Your closest style matches, with the reasons why', 'Your numbers against the pro for each metric'] },
+  live: { t: 'Live coaching', b: 'Feedback while you practise.', d: 'The camera stays on during practice.', s: ['ai-modes', 'live-scan'], l: ['Instant scores after each throw', 'Spoken coaching cues', 'Body pose detection'] },
+  daily: { t: 'Daily challenges', b: 'A reason to pick up your darts every day.', d: 'Three short games each day.', s: ['train'], l: ['A new daily challenge of three games', 'Keep your streak going', 'Mixes doubles, scoring and trebles'] },
+  weekly: { t: 'Big Fish Weekly Challenge', b: 'One test of your whole game, every week.', d: 'Six blocks to complete. It resets weekly.', s: ['weekly-challenge'], l: ['Scoring power, singles, trebles, doubles, checkouts and a championship mix', 'Blocks unlock one after another', 'Your first attempt counts most toward your rating'] },
+  games: { t: 'Training games', b: 'Practise with purpose, not just at treble 20.', d: 'Every game is scored, with accuracy and darts thrown.', s: ['train-games', 'session-history'], l: ['Big Fish Circuit, Treble Attack, Doubles Lockdown, Consistency Ladder, Around the Clock and more', 'Score, accuracy and time for every session', 'Optional AI form scan results'] },
+  codfather: { t: 'Codfather Mode', b: 'Play under match pressure against AI.', d: '', s: ['train'], l: ['501 against an AI opponent', '20 levels', 'Win to unlock the next level'] },
+  checkout: { t: 'Full Checkout Challenge', b: 'A lifetime goal for every player.', d: '', s: ['train'], l: ['Complete every checkout from 2 to 170', 'Tracks the finishes you have done'] },
+  plan: { t: 'Daily tasks & weekly plan', b: 'Always know what to practise next.', d: 'An AI-personalised 7-day schedule built around your weak areas.', s: ['weekly-plan', 'coach-task'], l: ['A focus for the week, like doubles', 'A game and a target for every day', 'Tasks from your coach appear too'] },
+  progress: { t: 'Your progress', b: 'See your game improve, week by week.', d: 'Your BFDAR rating, grade and momentum, with six skills behind it.', s: ['home', 'skills-radar', 'progress'], l: ['Accuracy, consistency, doubles, scoring, pressure and AI form', 'Score, accuracy and doubles trends over 7, 30 or 90 days', 'An AI insight on what to focus on'] },
+  board: { t: 'Train the whole board', b: 'Singles, trebles, doubles and checkouts.', d: 'Practice goes well beyond treble 20.', s: ['weekly-challenge', 'train-games'], l: ['Singles and trebles on 20, 19 and 18', 'Doubles from D20 down to D4', 'Checkout doubles to close out a leg'] },
+  muscle: { t: 'Muscle memory', b: 'Repeat a good throw until it is automatic.', d: 'Short, regular sessions build a consistent routine.', s: ['session-history'], l: ['Consistency Ladder and Around the Clock reward repeatable throws', 'Daily challenges keep the routine going'] },
+  // Coaches
+  brand: { t: 'Make it yours', b: 'Your academy name, logo and colours in the app.', d: 'Players see your academy, not ours.', s: ['@shepperton', '@kendal', '@bullseye'], l: ['Add your academy name and logo', 'Colours are taken from your logo', 'Players see your branding as soon as they join with your invite code'] },
+  dashboard: { t: 'Coach dashboard', b: 'Every player in one place.', d: '', s: ['coach-dashboard'], l: ['See every connected player and their rating', 'Invite players with a code', 'Keep track of places used'] },
+  assign: { t: 'Assign training', b: 'Set the work in seconds.', d: 'Tasks land in your player\'s app under "From your coach".', s: ['assign-task', 'coach-task'], l: ['Pick a training game', 'Set 5 to 20 minutes', 'Add a note for the player'] },
+  cplan: { t: 'Weekly plans', b: 'A plan for every player, every week.', d: 'AI-personalised 7-day schedules focused on each player\'s weak areas.', s: ['weekly-plan', 'train'], l: ['A focus of the week for each player', 'A game and a target for every day', 'Players see today\'s task in their app'] },
+  groups: { t: 'Groups', b: 'Organise your squad.', d: '', s: ['groups'], l: ['Put players into training groups', 'Add or remove players any time'] },
+  follow: { t: 'Follow every player', b: 'Spot progress and problems early.', d: 'Ratings, skills and sessions for each player.', s: ['player-details', 'skills-radar', 'home'], l: ['Rating and skill breakdown for every player', 'Session history and task status', 'Momentum shows who is improving or dropping'] },
+  howai: { t: 'How AI helps', b: 'More coaching from every session.', d: 'The AI reviews recorded throws and builds plans around weak areas.', s: ['ai-improve', 'frame-follow', 'weekly-plan'], l: ['Strengths and areas to improve for each player', 'Frame-by-frame technique feedback', 'Weekly plans built from each player\'s weak areas'] },
+  between: { t: 'Between sessions', b: 'Stay in touch all week.', d: 'Players see your tasks and can chat with you in the app.', s: ['coach-task', '@bullseye'], l: ['Chat with your players', 'Pending tasks from you on their home screen', 'A weekly tracker of the days they practised'] },
+  jdc: { t: 'JDC challenge', b: 'Screens to follow.', d: '', s: [], l: [], soon: 'The JDC challenge screens and approved branding will be added once Big Fish supplies them.' },
+};
+const SETS = {
+  players: { eyebrow: 'Built for players', left: ['ai', 'pro', 'live', 'daily', 'weekly'], right: ['games', 'codfather', 'checkout', 'plan', 'progress'], more: ['board', 'muscle'], phone: 'home' },
+  coaches: { eyebrow: 'Built for coaches & academies', left: ['brand', 'dashboard', 'assign', 'cplan', 'groups'], right: ['follow', 'howai', 'between', 'games', 'jdc'], more: ['board', 'muscle'], phone: 'coach-dashboard' },
+};
+const STORIES = {
+  players: { eyebrow: 'For players', title: 'From one throw to real progress.', steps: [['Record a throw', 'Prop up your phone and throw a set.', 'live-scan'], ['Get real feedback', 'See what to fix in your technique.', 'ai-improve'], ['Do your daily task', 'Your plan tells you what to practise.', 'weekly-plan'], ['See your progress', 'Watch your rating and skills move.', 'progress']] },
+  coaches: { eyebrow: 'For coaches & academies', title: 'Your academy, running all week.', steps: [['Brand your app', 'Add your name and logo.', '@shepperton'], ['Invite your players', 'They join with your code.', 'coach-dashboard'], ['Assign the work', 'Pick a game, a duration and a note.', 'assign-task'], ['Follow every player', 'Ratings, skills and sessions.', 'player-details']] },
+};
+const src = (s) => s.startsWith('@') ? `img/brand/${s.slice(1)}.webp` : `img/app/${s}.webp`;
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+const tile = (k) => `<button class="tile" type="button" data-feature="${k}"><span>${F[k].t}${F[k].soon ? '<small>Coming soon</small>' : ''}</span>${arrow}</button>`;
+document.querySelectorAll('[data-tiles]').forEach((r) => (r.innerHTML = r.dataset.tiles.split(' ').map(tile).join('')));
+
+let audience = 'players', step = 0;
+function render() {
+  document.querySelectorAll('[data-aud]').forEach((el) => (el.hidden = el.dataset.aud !== audience));
+  document.querySelectorAll('[data-audience]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.audience === audience));
+  const S = SETS[audience];
+  document.getElementById('feat-eyebrow').textContent = S.eyebrow;
+  document.getElementById('tiles-left').innerHTML = S.left.map(tile).join('');
+  document.getElementById('tiles-right').innerHTML = S.right.map(tile).join('');
+  document.getElementById('more').innerHTML = S.more.map((k) => `<button class="btn btn-line" type="button" data-feature="${k}">${F[k].t} →</button>`).join('');
+  document.getElementById('feat-phone').src = src(S.phone);
+  const W = STORIES[audience];
+  document.getElementById('watch-eyebrow').textContent = W.eyebrow;
+  document.getElementById('watch-title').textContent = W.title;
+  document.getElementById('steps').innerHTML = W.steps.map(([t, d], i) => `<button type="button" data-step="${i}" aria-pressed="${i === step}"><i>${i + 1}</i><span><b>${t}</b><span>${d}</span></span></button>`).join('');
+  const [t, , img] = W.steps[step];
+  const si = document.getElementById('story-img');
+  si.src = src(img); si.alt = t + ': app screen'; si.className = img.startsWith('@') ? 'wide' : '';
+  document.getElementById('story-tag').textContent = `Step ${step + 1} of ${W.steps.length}`;
+  document.getElementById('prev').disabled = step === 0;
+  document.getElementById('next').textContent = step === W.steps.length - 1 ? 'Start again ↺' : 'Next →';
+}
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-audience]');
+  if (a) { audience = a.dataset.audience; step = 0; render(); history.replaceState(null, '', '#' + (audience === 'coaches' ? 'coaches' : currentTab)); }
+  const st = e.target.closest('[data-step]'); if (st) { step = +st.dataset.step; render(); }
+});
+document.getElementById('prev').addEventListener('click', () => { if (step > 0) { step--; render(); } });
+document.getElementById('next').addEventListener('click', () => { step = (step + 1) % STORIES[audience].steps.length; render(); });
+
+/* Try a style */
+const STYLES = { kendal: 'Kendal Youth', rubery: 'Rubery', pendle: 'Pendle Youth', shepperton: 'Shepperton', bullseye: 'Bullseye' };
+document.querySelectorAll('[data-style]').forEach((b, _, all) => b.addEventListener('click', () => {
+  all.forEach((x) => x.setAttribute('aria-pressed', x === b));
+  const img = document.getElementById('style-img');
+  img.src = `img/brand/${b.dataset.style}.webp`; img.alt = `The app in ${STYLES[b.dataset.style]} Darts Academy's colours`;
+  document.getElementById('sw-name').textContent = STYLES[b.dataset.style];
+}));
+
+/* Feature panel */
+let lastBtn = null;
+function openFeature(k, btn) {
+  const f = F[k]; lastBtn = btn || null;
+  const shots = f.s.length ? `<div class="shots">${f.s.map((s) => `<img src="${src(s)}" alt="${f.t}: app screen" loading="lazy" class="${s.startsWith('@') ? 'wide' : ''}">`).join('')}</div>` : '<div class="shots" style="min-height:260px;align-items:center;color:var(--muted)">Screens to follow</div>';
+  document.getElementById('feat-body').innerHTML = `
+    <div>
+      <h2 id="feat-t">${f.t}</h2>
+      <p class="benefit">${f.b}</p>
+      ${f.d ? `<p class="desc">${f.d}</p>` : ''}
+      ${f.l.length ? `<ul>${f.l.map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}
+      ${f.soon ? `<p class="soon">${f.soon}</p>` : ''}
+      <div style="display:grid;gap:10px;margin-top:20px">
+        <button class="btn btn-primary" type="button" data-close data-go="watch">▷ Watch the app</button>
+        <button class="btn btn-line" type="button" data-swap="dlg-app">Get the app</button>
+      </div>
+    </div>
+    <div>${shots}</div>`;
+  const d = document.getElementById('dlg-feature'); d.showModal(); d.scrollTop = 0;
+}
+document.addEventListener('click', (e) => { const fb = e.target.closest('[data-feature]'); if (fb) openFeature(fb.dataset.feature, fb); });
+document.getElementById('dlg-feature').addEventListener('close', () => { if (lastBtn && document.contains(lastBtn)) lastBtn.focus(); });
+
+/* Tabs, bottom nav, deep links (#overview #features #watch #players #coaches) */
+const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
+let currentTab = 'overview';
+function selectTab(id, focus) {
+  currentTab = id;
+  tabs.forEach((t) => { const on = t.getAttribute('aria-controls') === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById(t.getAttribute('aria-controls')).hidden = !on; if (on && focus) t.focus(); });
+  document.querySelectorAll('.bottom-nav [data-go]').forEach((b) => b.setAttribute('aria-current', b.dataset.go === id));
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({ top: 0 });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectTab(t.getAttribute('aria-controls')));
+  t.addEventListener('keydown', (e) => { const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (d) { e.preventDefault(); selectTab(tabs[(i + d + tabs.length) % tabs.length].getAttribute('aria-controls'), true); } });
+});
+document.addEventListener('click', (e) => { const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); selectTab(g.dataset.go); } });
+
+/* Dialogs + lightbox */
+document.addEventListener('click', (e) => {
+  const o = e.target.closest('[data-open]'); if (o) document.getElementById(o.dataset.open).showModal();
+  const s = e.target.closest('[data-swap]'); if (s) { s.closest('dialog').close(); document.getElementById(s.dataset.swap).showModal(); }
+  if (e.target.closest('[data-close]')) e.target.closest('dialog')?.close();
+  if (e.target.tagName === 'DIALOG') e.target.close();
+  const im = e.target.closest('.feat .shots img');
+  if (im) { const lb = document.getElementById('lightbox'); lb.querySelector('img').src = im.src; lb.querySelector('img').alt = im.alt; lb.showModal(); }
+});
+
+const h = location.hash.slice(1);
+if (h === 'coaches' || h === 'players') audience = h;
+render();
+if (['overview', 'features', 'watch'].includes(h)) selectTab(h);
+</script>
+</body>
+</html>
