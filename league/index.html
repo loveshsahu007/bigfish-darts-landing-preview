@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Big Fish Darts League | Find and Run Darts Tournaments</title>
+  <meta name="description" content="Find local darts tournaments, leagues and social darts near you. Big Fish Darts League helps pubs and venues run great darts nights, free to join.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#243772">
+  <link rel="icon" type="image/png" href="img/logos/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:ital,wght@1,800&display=swap">
+  <style>
+    /* Layout: product-first. Header + tabs, then the active tab only.
+       Colours from the Big Fish Darts League brand guidelines. */
+    :root {
+      --rhino: #243772; --navy: #1b2b56; --sapphire: #1143d4; --sapphire-dark: #0d36ad;
+      --grey: #f2f2f2; --white: #ffffff;
+      --ink: #1b2b56; --muted: #556081; --line: #dfe3ec; --soft: #eaf0fd; --soft-2: #f6f8fc;
+      --live: #d9381e; --live-soft: #fdebe7; --ok: #0b7a46; --ok-soft: #e3f4ea;
+      --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+      --r: 12px;
+      color-scheme: light;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-padding-top: 140px; }
+    body { margin: 0; font-family: var(--body); font-size: 16px; line-height: 1.55; color: var(--ink); background: var(--grey); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: var(--sapphire); }
+    button, input, select { font: inherit; color: inherit; }
+    :focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; border-radius: 6px; }
+    .wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding-inline: 20px; }
+    .eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sapphire); }
+    h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: -0.01em; text-wrap: balance; }
+    h1 { font-size: clamp(32px, 4.4vw, 54px); font-weight: 800; }
+    h2 { font-size: clamp(26px, 3vw, 38px); font-weight: 800; }
+    h3 { font-size: 20px; font-weight: 700; }
+    .lede { margin: 10px 0 0; font-size: 18px; color: var(--muted); }
+    .small { font-size: 13px; color: var(--muted); }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 20px; border: 0; border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; white-space: nowrap; transition: background-color .15s, border-color .15s, color .15s; }
+    .btn-primary { background: var(--sapphire); color: #fff; } .btn-primary:hover { background: var(--sapphire-dark); color: #fff; }
+    .btn-soft { background: var(--soft); color: var(--navy); } .btn-soft:hover { background: #dbe5fb; }
+    .btn-line { background: #fff; color: var(--navy); border: 1.5px solid var(--line); } .btn-line:hover { border-color: var(--navy); }
+    .btn-block { width: 100%; }
+
+    /* Promo strip (kept from the current site) */
+    .strip { background: var(--rhino); color: #fff; font-size: 14px; }
+    .strip .wrap { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 40px; text-align: center; }
+    .strip button { background: none; border: 0; color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 6px 0; }
+
+    /* Header */
+    .head { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+    .head .headbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 72px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+    .brand img { width: 50px; }
+    .brand b { display: block; font-size: 19px; font-weight: 800; letter-spacing: 0.02em; line-height: 1; }
+    .brand span span { display: block; margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; color: var(--muted); }
+    .head-actions { display: flex; align-items: center; gap: 8px; }
+    .tabs { display: flex; gap: 4px; border-top: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tabs [role="tab"] { flex: 1 0 auto; min-height: 54px; padding: 0 22px; border: 0; background: none; font-weight: 700; font-size: 16px; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; }
+    .tabs [role="tab"]:hover { color: var(--ink); }
+    .tabs [role="tab"][aria-selected="true"] { color: var(--sapphire); border-bottom-color: var(--sapphire); }
+
+    main { padding-block: 36px 64px; }
+    [role="tabpanel"][hidden] { display: none; }
+    .panel { animation: fade .2s ease; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--r); }
+    .chip { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; padding: 0 10px; border-radius: 6px; background: var(--soft); color: var(--sapphire); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .chip-live { background: var(--live-soft); color: var(--live); }
+    .chip-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .chip-ok { background: var(--ok-soft); color: var(--ok); }
+    .chip-grey { background: #eceff4; color: var(--muted); }
+    .chip-full { background: #fde8ea; color: #b4232f; }
+
+    /* ---------- Tournaments ---------- */
+    .t-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+    .search { margin-top: 24px; padding: 18px; background: #e9edf5; border-radius: var(--r); display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+    .search label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 700; }
+    .search input, .search select { width: 100%; min-height: 48px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    .search .btn { min-height: 48px; padding: 0 28px; }
+    .t-bar { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    .seg { display: inline-flex; padding: 4px; gap: 2px; border-radius: 10px; background: #e3e7f0; }
+    .seg button { min-height: 38px; padding: 0 16px; border: 0; border-radius: 7px; background: none; font-weight: 700; font-size: 14px; color: var(--muted); cursor: pointer; }
+    .seg button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(27,43,86,0.15); }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pills button { min-height: 34px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--soft); color: var(--sapphire); font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+    .pills button[aria-pressed="true"] { background: var(--navy); color: #fff; }
+    .events { margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .event { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 16px 18px; }
+    .date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0; border-radius: 10px; background: var(--soft-2); text-align: center; line-height: 1; }
+    .date b { font-size: 28px; font-weight: 800; margin: 4px 0; }
+    .date span { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+    .event h3 { margin: 8px 0 4px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 15px; color: var(--muted); }
+    .event-side { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .spots { font-size: 14px; font-weight: 700; white-space: nowrap; }
+    .bar { width: 130px; height: 6px; border-radius: 4px; background: #e3e7f0; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: var(--sapphire); }
+    .empty { padding: 32px; text-align: center; color: var(--muted); }
+    .host-cta { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); overflow: hidden; }
+    .host-cta .txt { padding: 28px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .host-cta img { width: 100%; height: 100%; object-fit: cover; min-height: 220px; }
+
+    /* ---------- Live & results ---------- */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .shot-card { overflow: hidden; display: flex; flex-direction: column; }
+    .shot-card .shot { background: var(--rhino); padding: 16px 16px 0; display: flex; justify-content: center; height: 300px; overflow: hidden; }
+    .shot-card .shot img { width: 78%; border-radius: 14px 14px 0 0; object-fit: cover; object-position: top; }
+    .shot-card .txt { padding: 16px; }
+    .shot-card p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+    .live-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+
+    /* ---------- Venues ---------- */
+    .venue-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0; overflow: hidden; }
+    .venue-hero .txt { padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+    .venue-hero img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+    .steps { margin-top: 18px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; counter-reset: s; }
+    .step { padding: 18px; counter-increment: s; }
+    .step::before { content: counter(s); display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--rhino); color: #fff; font-weight: 800; margin-bottom: 12px; }
+    .step p { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
+    .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+    .video { position: relative; border-radius: var(--r); overflow: hidden; background: #0e1630; aspect-ratio: 9 / 16; max-height: 560px; }
+    .video button { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; cursor: pointer; background: none; color: #fff; }
+    .video button img { width: 100%; height: 100%; object-fit: cover; }
+    .video button::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(14,22,48,0.9)); }
+    .video .play { position: absolute; z-index: 1; left: 50%; top: 45%; transform: translate(-50%, -50%); width: 72px; height: 72px; border-radius: 50%; background: var(--sapphire); display: flex; align-items: center; justify-content: center; }
+    .video .cap { position: absolute; z-index: 1; left: 16px; right: 16px; bottom: 14px; text-align: left; }
+    .video .cap b { display: block; font-size: 20px; }
+    .video .cap span { font-size: 13px; opacity: 0.85; }
+    .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .gallery button { padding: 0; border: 0; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; cursor: zoom-in; background: var(--navy); }
+    .gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .faq details { border-top: 1px solid var(--line); padding: 14px 0; }
+    .faq details:last-child { border-bottom: 1px solid var(--line); }
+    .faq summary { cursor: pointer; font-weight: 700; }
+    .faq p { margin: 8px 0 0; color: var(--muted); }
+
+    /* ---------- Explore the app ---------- */
+    .explore { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1fr); gap: 18px; align-items: stretch; margin-top: 24px; }
+    .tiles { display: flex; flex-direction: column; gap: 12px; }
+    .tile { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; padding: 0 18px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-weight: 700; font-size: 16px; text-align: left; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+    .tile:hover { border-color: var(--sapphire); box-shadow: 0 0 0 1px var(--sapphire) inset; }
+    .tile svg { flex: none; width: 18px; height: 18px; color: var(--sapphire); }
+    .tile small { display: block; font-weight: 600; font-size: 12px; color: var(--muted); }
+    .phone-stage { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 18px; padding: 22px; border-radius: var(--r); background: var(--soft); }
+    .phone { width: min(230px, 100%); border-radius: 30px; border: 8px solid #0e1630; background: #0e1630; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(14,22,48,0.55); }
+    .phone img { width: 100%; }
+    .more { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .more .btn { min-width: 240px; }
+
+    /* Feature panel (dialog) */
+    dialog { border: 0; padding: 0; border-radius: 16px; width: 100%; max-width: min(880px, calc(100vw - 24px)); max-height: calc(100vh - 32px); color: var(--ink); box-shadow: 0 30px 80px rgba(14,22,48,0.45); }
+    dialog::backdrop { background: rgba(14,22,48,0.6); }
+    dialog[open] { animation: fade .18s ease; }
+    .dlg-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; background: #fff; border-bottom: 1px solid var(--line); }
+    .back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 6px; border: 0; background: none; color: var(--sapphire); font-weight: 700; cursor: pointer; }
+    .x { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+    .feat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 24px; }
+    .feat .benefit { margin: 8px 0 0; font-size: 19px; font-weight: 700; }
+    .feat .desc { margin: 8px 0 0; color: var(--muted); }
+    .feat ul { margin: 16px 0 0; padding-left: 20px; }
+    .feat li { margin: 6px 0; }
+    .feat .shots { display: flex; gap: 10px; justify-content: center; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
+    .feat .shots img { width: 190px; flex: none; border-radius: 16px; border: 5px solid #0e1630; cursor: zoom-in; }
+    .feat .shots img.wide { width: 300px; border-radius: 10px; }
+    .feat .film { margin-top: 20px; }
+    .feat .film iframe { width: 100%; aspect-ratio: 9 / 16; max-height: 520px; border: 0; border-radius: var(--r); background: #0e1630; }
+    .soon { margin-top: 16px; padding: 14px 16px; border-radius: 10px; background: #fff7e0; color: #6a4e00; font-size: 14px; }
+    .portal { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .portal:first-child { border-top: 0; }
+    .portal p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+    dialog.lightbox { max-width: min(560px, calc(100vw - 24px)); background: #0e1630; }
+    dialog.lightbox img { width: 100%; max-height: 86vh; object-fit: contain; }
+    dialog.lightbox .x { position: absolute; top: 10px; right: 10px; }
+
+    footer { background: var(--navy); color: #c9d1e8; font-size: 14px; }
+    footer .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; padding-block: 22px; }
+    footer a { color: #c9d1e8; } footer a:hover { color: #fff; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+    /* Mobile bottom navigation */
+    .bottom-nav { display: none; }
+    @media (max-width: 860px) {
+      .search { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .search .where { grid-column: 1 / -1; }
+      .search .btn { grid-column: 1 / -1; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .steps { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .explore { grid-template-columns: minmax(0, 1fr); }
+      .explore .phone-stage { order: -1; }
+      .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tile { min-height: 58px; font-size: 15px; padding: 0 14px; }
+      .venue-hero, .host-cta, .two { grid-template-columns: minmax(0, 1fr); }
+      .feat { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+    }
+    @media (max-width: 640px) {
+      .tabs { display: none; }
+      .head-actions .btn-soft { display: none; }
+      .brand img { width: 42px; }
+      .strip { font-size: 13px; }
+      main { padding-block: 22px 96px; }
+      .event { grid-template-columns: 60px minmax(0, 1fr); gap: 12px; padding: 14px; }
+      .event-side { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; }
+      .date b { font-size: 24px; }
+      .live-list, .grid-4 { grid-template-columns: minmax(0, 1fr); }
+      .steps { grid-template-columns: minmax(0, 1fr); }
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .venue-hero .txt, .host-cta .txt { padding: 22px; }
+      dialog { max-width: 100vw; max-height: 100vh; height: 100%; border-radius: 0; margin: 0; }
+      .feat .shots { justify-content: flex-start; }
+      .bottom-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: #fff; border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; border: 0; background: none; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; }
+      .bottom-nav svg { width: 22px; height: 22px; }
+      .bottom-nav button[aria-current="true"] { color: var(--sapphire); }
+      footer { padding-bottom: 64px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<div class="strip"><div class="wrap">Own a pub or venue? Host a Big Fish Darts League night. It's free to join. <button type="button" data-go="venues">Host at your venue</button></div></div>
+
+<header class="head">
+  <div class="wrap headbar">
+    <a class="brand" href="#tournaments" data-go="tournaments" aria-label="Big Fish Darts League home">
+      <img src="img/logos/league-crest-160.webp" width="50" height="39" alt="">
+      <span><b>BIG FISH DARTS</b><span>LEAGUE</span></span>
+    </a>
+    <div class="head-actions">
+      <button class="btn btn-soft" type="button" data-open="dlg-app">Get the app</button>
+      <button class="btn btn-line" type="button" data-open="dlg-portals">Portals ↗</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="tabs" role="tablist" aria-label="Big Fish Darts League">
+      <button role="tab" id="tab-tournaments" aria-controls="tournaments" aria-selected="true">Tournaments</button>
+      <button role="tab" id="tab-live" aria-controls="live" aria-selected="false" tabindex="-1">Live &amp; results</button>
+      <button role="tab" id="tab-venues" aria-controls="venues" aria-selected="false" tabindex="-1">Venues</button>
+      <button role="tab" id="tab-app" aria-controls="app" aria-selected="false" tabindex="-1">Explore the app</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ======================= TOURNAMENTS ======================= -->
+  <section id="tournaments" class="panel" role="tabpanel" aria-labelledby="tab-tournaments">
+    <div class="t-head">
+      <div>
+        <p class="eyebrow">Find your next night at the oche</p>
+        <h1 style="margin-top: 10px">Your next match starts here.</h1>
+        <p class="lede">Find local tournaments, leagues and social darts.</p>
+      </div>
+      <button class="btn btn-soft" type="button" data-open="dlg-portals" data-portal="manager">Manage a tournament ↗</button>
+    </div>
+
+    <form class="search" id="search" role="search">
+      <div class="where">
+        <label for="q">Town, city or country</label>
+        <input id="q" type="search" placeholder="Where do you want to play?" autocomplete="off">
+      </div>
+      <div>
+        <label for="when">When</label>
+        <select id="when">
+          <option value="">Any date</option>
+          <option value="today">Today</option>
+          <option value="week">Next 7 days</option>
+          <option value="month">Next 30 days</option>
+        </select>
+      </div>
+      <div>
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="">All formats</option>
+          <option>Knockout</option>
+          <option>Round Robin</option>
+          <option>Royal Rumble</option>
+          <option>Premier League</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Search →</button>
+    </form>
+
+    <div class="t-bar">
+      <div class="seg" role="group" aria-label="Event type">
+        <button type="button" aria-pressed="true" data-kind="tournament">Tournaments</button>
+        <button type="button" aria-pressed="false" data-kind="league">Leagues &amp; series</button>
+      </div>
+      <div class="pills" role="group" aria-label="Status">
+        <button type="button" aria-pressed="true" data-status="all">All</button>
+        <button type="button" aria-pressed="false" data-status="upcoming">Upcoming</button>
+        <button type="button" aria-pressed="false" data-status="live">Live</button>
+        <button type="button" aria-pressed="false" data-status="past">Past</button>
+      </div>
+    </div>
+
+    <div class="events" id="events" aria-live="polite"></div>
+    <p class="small" style="margin-top: 10px">Events shown are real listings from the Big Fish Darts League app on 15 Oct 2026. The finished site keeps the existing live feed.</p>
+
+    <div class="card host-cta">
+      <div class="txt">
+        <p class="eyebrow">For pubs, clubs and venues</p>
+        <h2>Run a great darts night.</h2>
+        <p class="lede" style="margin: 0">Schedule tournaments and leagues, and we promote them for you. Free to join.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px">
+          <button class="btn btn-primary" type="button" data-go="venues">Host at your venue</button>
+          <button class="btn btn-line" type="button" data-open="dlg-portals" data-portal="manager">Manager portal ↗</button>
+        </div>
+      </div>
+      <img src="img/photos/players-board.webp" alt="Big Fish Darts League players at a branded board" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ======================= LIVE & RESULTS ======================= -->
+  <section id="live" class="panel" role="tabpanel" aria-labelledby="tab-live" hidden>
+    <p class="eyebrow">Live &amp; results</p>
+    <h1 style="margin-top: 10px">Follow every match.</h1>
+    <p class="lede">Scores, groups and brackets update as the night is played.</p>
+
+    <h2 style="margin-top: 32px; font-size: 22px">Happening now</h2>
+    <div class="live-list" id="live-now"></div>
+
+    <h2 style="margin-top: 36px; font-size: 22px">How results look in the app</h2>
+    <div class="grid-4" style="margin-top: 14px">
+      <article class="card shot-card"><div class="shot"><img src="img/app/bracket.webp" alt="Tournament bracket with completed, live and upcoming matches" loading="lazy"></div><div class="txt"><h3>Brackets</h3><p>Completed, live and upcoming matches at a glance.</p></div></article>
+      <article class="card shot-card"><div class="shot"><img src="img/app/rr-groups-ab.webp" alt="Round robin group table with legs won, legs lost and averages" loading="lazy"></div><div class="txt"><h3>Group tables</h3><p>Wins, legs and averages for every group.</p></div></article>
+      <article class="card shot-card"><div class="shot"><img src="img/app/live-scoring.webp" alt="Live scoring screen for a two-player leg" loading="lazy"></div><div class="txt"><h3>Live scoring</h3><p>Every visit scored, with checkout suggestions.</p></div></article>
+      <article class="card shot-card"><div class="shot"><img src="img/app/rumble-winner.webp" alt="Royal Rumble winner screen" loading="lazy"></div><div class="txt"><h3>Winners</h3><p>Champions crowned and recorded in the app.</p></div></article>
+    </div>
+    <div style="margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px">
+      <button class="btn btn-primary" type="button" data-open="dlg-app">Follow live scores in the app</button>
+    </div>
+  </section>
+
+  <!-- ======================= VENUES ======================= -->
+  <section id="venues" class="panel" role="tabpanel" aria-labelledby="tab-venues" hidden>
+    <div class="card venue-hero">
+      <div class="txt">
+        <p class="eyebrow">Host at your venue</p>
+        <h1>Host darts nights that bring customers back.</h1>
+        <p class="lede" style="margin: 0">Run tournaments and league nights with promotion built in. Free to join.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px">
+          <button class="btn btn-primary" type="button" data-open="dlg-app">Download the app</button>
+          <button class="btn btn-line" type="button" data-open="dlg-portals" data-portal="manager">Manager portal ↗</button>
+        </div>
+      </div>
+      <img src="img/photos/p31.webp" alt="League players at the bar of the White Lion pub" loading="lazy">
+    </div>
+
+    <h2 style="margin-top: 36px">How hosting works</h2>
+    <div class="steps">
+      <div class="card step"><h3>Create your venue</h3><p>Add your venue details and opening hours.</p></div>
+      <div class="card step"><h3>Schedule an event</h3><p>Set the date, time, format and number of players.</p></div>
+      <div class="card step"><h3>We promote it</h3><p>It appears in the app, with a banner and a share link.</p></div>
+      <div class="card step"><h3>Players check in</h3><p>Players join in the app and check in on the night.</p></div>
+      <div class="card step"><h3>Track results</h3><p>Scores, stats and rankings update live.</p></div>
+    </div>
+
+    <div class="two" style="margin-top: 36px; align-items: start">
+      <div>
+        <h2>Hear it from the pub</h2>
+        <p class="lede">See a Big Fish Darts League night at a real venue.</p>
+        <div class="video" style="margin-top: 16px; max-width: 360px">
+          <button data-video="1XcL3ev6wZBAByfEG-SUGBGuQitfBIqiR" aria-label="Play video: Big Fish Darts League for pubs and venues"><img src="img/video/pub.webp" alt=""><span class="play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 14 14"><path d="M3.5 1.5v11l9-5.5z" fill="#fff"/></svg></span><span class="cap"><b>Big Fish for pubs</b><span>Promo film</span></span></button>
+        </div>
+        <p class="small" style="margin-top: 8px">The venue-owner testimonial film goes here when it's ready.</p>
+      </div>
+      <div>
+        <h2>Promotion, done for you</h2>
+        <p class="lede">Every event gets a printable banner and a WhatsApp-ready share message with a join link.</p>
+        <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
+          <button class="gal-btn" style="padding: 0; border: 0; background: none; cursor: zoom-in" aria-label="Enlarge event banner"><img src="img/app/promo-banner.webp" alt="Printable event banner for a 24-player round robin" width="200" style="width: 200px; border-radius: 10px; border: 1px solid var(--line)"></button>
+          <button class="gal-btn" style="padding: 0; border: 0; background: none; cursor: zoom-in" aria-label="Enlarge WhatsApp share message"><img src="img/app/promo-whatsapp.webp" alt="WhatsApp message with event details and a join link" width="220" style="width: 220px; border-radius: 10px; border: 1px solid var(--line)"></button>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 36px">Real venues, real players</h2>
+    <div class="gallery" style="margin-top: 16px">
+      <button><img src="img/photos/p32.webp" alt="League players at the bar of the White Lion" loading="lazy"></button>
+      <button><img src="img/photos/p64.webp" alt="Players sharing a drink between matches" loading="lazy"></button>
+      <button><img src="img/photos/p43.webp" alt="A player collecting darts from a Big Fish board" loading="lazy"></button>
+      <button><img src="img/photos/p10.webp" alt="Sign up today poster at a venue" loading="lazy"></button>
+      <button><img src="img/photos/p44.webp" alt="Board-side tablet for scoring" loading="lazy"></button>
+      <button><img src="img/photos/p58.webp" alt="A Big Fish Darts branded dartboard" loading="lazy"></button>
+    </div>
+
+    <div class="two" style="margin-top: 36px">
+      <div class="faq">
+        <h2 style="margin-bottom: 12px">Questions from venues</h2>
+        <details><summary>Do we need special equipment?</summary><p>No. A dartboard and a playing area are enough. Scoring runs on phones or a board-side tablet.</p></details>
+        <details><summary>How do players find our events?</summary><p>Your events appear in the app's local events feed and on this website.</p></details>
+        <details><summary>Can we run leagues as well as tournaments?</summary><p>Yes. Run one-off tournaments, weekly leagues and Premier League series.</p></details>
+      </div>
+      <div class="card" style="padding: 24px">
+        <h2>Talk to us</h2>
+        <p class="lede">Want to host at your venue? Email the team.</p>
+        <p style="margin: 14px 0 0; font-size: 18px; font-weight: 700; user-select: all">info@bigfishdartsleague.com</p>
+        <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px">
+          <a class="btn btn-primary" href="mailto:info@bigfishdartsleague.com">Email us</a>
+          <button class="btn btn-line" type="button" data-open="dlg-app">Get the app</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= EXPLORE THE APP ======================= -->
+  <section id="app" class="panel" role="tabpanel" aria-labelledby="tab-app" hidden>
+    <p class="eyebrow">The app behind a great darts night</p>
+    <h1 style="margin-top: 10px">Tap a feature. See it work.</h1>
+
+    <div class="explore">
+      <div class="tiles" id="tiles-left"></div>
+      <div class="phone-stage">
+        <div class="phone"><img src="img/app/home-news.webp" alt="Big Fish Darts League app home screen with news and updates"></div>
+        <button class="btn btn-primary btn-block" type="button" data-film>▷ Watch the app</button>
+      </div>
+      <div class="tiles" id="tiles-right"></div>
+    </div>
+    <div class="more">
+      <button class="btn btn-line" type="button" data-feature="practice">Practice &amp; Codfather →</button>
+      <button class="btn btn-line" type="button" data-feature="real">Real venues &amp; players →</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>© 2026 Big Fish Darts League · <a href="https://www.bigfishdarts.com/">bigfishdarts.com</a></span>
+    <nav aria-label="Footer">
+      <a href="https://bigfishdartsleague.com/blogs/">Blog</a>
+      <a href="https://bigfishdartsleague.com/privacy-policy/">Privacy</a>
+      <a href="https://bigfishdartsleague.com/terms-conditions/">Terms</a>
+      <a href="https://www.instagram.com/bigfishdartsleague/">Instagram</a>
+      <a href="https://www.facebook.com/people/Big-Fish-Darts/61577716138135/">Facebook</a>
+      <a href="https://www.youtube.com/channel/UCSxT7PgtQ6lNUuAB854ubFQ">YouTube</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- Mobile bottom navigation -->
+<nav class="bottom-nav" aria-label="Sections">
+  <button type="button" data-go="tournaments" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Find events</button>
+  <button type="button" data-go="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg>Live</button>
+  <button type="button" data-go="venues"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>Venues</button>
+  <button type="button" data-go="app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>The app</button>
+  <button type="button" data-open="dlg-portals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Portals</button>
+</nav>
+
+<!-- ======================= Dialogs ======================= -->
+<dialog id="dlg-portals" aria-labelledby="portals-t">
+  <div class="dlg-top"><h2 id="portals-t" style="font-size: 22px">Portals</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div style="padding: 20px">
+    <p style="margin: 0 0 6px; color: var(--muted)">Web portals are coming soon. Until then, everything works in the Big Fish Darts League app.</p>
+    <div class="portal" id="portal-player"><div><h3>Player portal</h3><p>Your events, results and stats.</p></div><span class="chip chip-grey">Coming soon</span></div>
+    <div class="portal" id="portal-manager"><div><h3>Manager portal</h3><p>Create and run tournaments and leagues.</p></div><span class="chip chip-grey">Coming soon</span></div>
+    <div class="portal" id="portal-ambassador"><div><h3>Ambassador portal</h3><p>For Big Fish ambassadors in your area.</p></div><span class="chip chip-grey">Coming soon</span></div>
+    <button class="btn btn-primary btn-block" type="button" data-swap="dlg-app" style="margin-top: 12px">Open the app instead</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-app" aria-labelledby="app-t" style="max-width: 460px">
+  <div class="dlg-top"><h2 id="app-t" style="font-size: 22px">Get the Big Fish Darts League app</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div style="padding: 20px; display: grid; gap: 10px">
+    <a class="btn btn-primary" href="https://apps.apple.com/gb/app/big-fish-darts/id6755594904" target="_blank" rel="noopener">Download on the App Store ↗</a>
+    <a class="btn btn-line" href="https://play.google.com/store/apps/details?id=com.engio.bigfishleague" target="_blank" rel="noopener">Get it on Google Play ↗</a>
+  </div>
+</dialog>
+
+<dialog id="dlg-event" aria-labelledby="event-t">
+  <div class="dlg-top"><button class="back" type="button" data-close>← Back to events</button><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div style="padding: 22px" id="event-body"></div>
+</dialog>
+
+<dialog id="dlg-feature" aria-labelledby="feat-t">
+  <div class="dlg-top"><button class="back" type="button" data-close>← Back to features</button><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div class="feat" id="feat-body"></div>
+</dialog>
+
+<dialog id="lightbox" class="lightbox" aria-label="Enlarged image">
+  <button class="x" type="button" data-close aria-label="Close">×</button>
+  <img src="" alt="">
+</dialog>
+
+<script>
+/* ---------- Events: real listings from the Big Fish Darts League app (15 Oct 2026) ---------- */
+const TODAY = new Date('2026-10-15T12:00:00');
+const EVENTS = [
+  { kind: 'tournament', name: 'Round Robin 24 Persons', venue: 'Car Port Inn', town: '', start: '2026-10-15', time: '11:00', format: 'Round Robin', game: '101', match: 'Best of 1', lineup: 'Singles', seats: 24, joined: 24, entry: '', age: 'All ages', groups: '4 groups of 6', status: 'live', url: 'https://bigfishdartsleague.com/tournament-details/?id=75jbn9Eb9WGN85JIZhlz' },
+  { kind: 'tournament', name: 'New Trinity Tuesday Round Robin', venue: 'New Trinity Club', town: 'Hull', start: '2026-10-20', time: '18:30', format: 'Round Robin', game: '501', match: 'Best of 3', lineup: 'Singles', seats: 24, joined: 2, entry: 'Free · pay at the door', age: 'All ages', groups: '4 groups of 6', status: 'upcoming', url: 'https://bigfishdartsleague.com/tournament-details/?id=88lzlmzuu2eyF0sZrYmU' },
+  { kind: 'league', name: 'Crofters Wednesday Night Autumn', venue: 'Crofters', town: 'Barrow', start: '2026-09-30', end: '18 Nov', time: 'Wednesdays 19:30', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 5, entry: '', age: '', groups: '', status: 'live' },
+  { kind: 'league', name: 'The Station Hotel Premier League', venue: 'The Station Hotel and Sports Bar', town: '', start: '2026-07-30', end: '17 Sep', time: '19:00', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 8, entry: '', age: '', groups: '', status: 'past' },
+  { kind: 'league', name: 'Askam Rugby Wednesday League', venue: 'Askam Rugby Club', town: 'Askam-in-Furness', start: '2026-03-16', end: '24 May', time: 'Wednesdays 19:30', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 8, entry: '', age: '', groups: '', status: 'past' },
+];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const state = { kind: 'tournament', status: 'all', q: '', when: '', format: '' };
+const statusChip = (s) => s === 'live' ? '<span class="chip chip-live">Live</span>' : s === 'upcoming' ? '<span class="chip chip-ok">Upcoming</span>' : '<span class="chip chip-grey">Past</span>';
+function dateBlock(iso) { const d = new Date(iso + 'T12:00:00'); return `<div class="date" aria-hidden="true"><span>${MONTHS[d.getMonth()]}</span><b>${d.getDate()}</b><span>${d.getFullYear()}</span></div>`; }
+function inWindow(e) {
+  if (!state.when) return true;
+  const d = new Date(e.start + 'T12:00:00'); const days = (d - TODAY) / 864e5;
+  if (state.when === 'today') return e.start === '2026-10-15' || e.status === 'live';
+  if (state.when === 'week') return days >= -1 && days <= 7 || e.status === 'live';
+  if (state.when === 'month') return days >= -1 && days <= 30 || e.status === 'live';
+  return true;
+}
+function renderEvents() {
+  const q = state.q.trim().toLowerCase();
+  const list = EVENTS.filter((e) => e.kind === state.kind && (state.status === 'all' || e.status === state.status) && (!state.format || e.format === state.format) && (!q || `${e.name} ${e.venue} ${e.town}`.toLowerCase().includes(q)) && inWindow(e));
+  const box = document.getElementById('events');
+  box.innerHTML = list.length ? '' : `<div class="card empty">No ${state.kind === 'league' ? 'leagues' : 'tournaments'} match your search. Try another town, date or format.</div>`;
+  list.forEach((e) => {
+    const full = e.joined >= e.seats;
+    const el = document.createElement('article');
+    el.className = 'card event';
+    el.innerHTML = `${dateBlock(e.start)}
+      <div style="min-width:0">
+        <div style="display:flex;flex-wrap:wrap;gap:6px">${statusChip(e.status)}<span class="chip">${e.format}</span>${full && e.status !== 'past' ? '<span class="chip chip-full">Full</span>' : ''}</div>
+        <h3>${e.name}</h3>
+        <div class="meta"><span>${e.venue}${e.town ? ' · ' + e.town : ''}</span><span>${e.end ? 'Until ' + e.end + ' · ' : ''}${e.time}${e.lineup ? ' · ' + e.lineup : ''}${e.game ? ' · ' + e.game : ''}</span></div>
+      </div>
+      <div class="event-side">
+        <div><div class="spots">${e.status === 'past' ? 'Finished' : full ? `${e.seats}/${e.seats} players` : `${e.seats - e.joined} of ${e.seats} spots left`}</div>${e.status !== 'past' ? `<div class="bar" aria-hidden="true"><i style="width:${Math.min(100, e.joined / e.seats * 100)}%"></i></div>` : ''}</div>
+        <button class="btn btn-line" type="button">View event →</button>
+      </div>`;
+    el.querySelector('button').addEventListener('click', () => openEvent(e));
+    box.appendChild(el);
+  });
+}
+function openEvent(e) {
+  const rows = [['Venue', e.venue + (e.town ? ', ' + e.town : '')], ['Date', e.end ? `${new Date(e.start + 'T12:00:00').getDate()} ${MONTHS[new Date(e.start + 'T12:00:00').getMonth()]} – ${e.end}` : new Date(e.start + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })], ['Time', e.time], ['Format', e.format], ['Game', e.game], ['Match format', e.match], ['Line-up', e.lineup], ['Groups', e.groups], ['Players', `${e.joined}/${e.seats}`], ['Entry', e.entry], ['Age', e.age]].filter((r) => r[1]);
+  const open = e.status !== 'past';
+  document.getElementById('event-body').innerHTML = `
+    <div style="display:flex;flex-wrap:wrap;gap:6px">${statusChip(e.status)}<span class="chip">${e.format}</span></div>
+    <h2 id="event-t" style="margin-top:10px">${e.name}</h2>
+    <dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px 20px;margin:20px 0 0">${rows.map(([k, v]) => `<div><dt class="small" style="font-weight:700;text-transform:uppercase;letter-spacing:.08em">${k}</dt><dd style="margin:2px 0 0;font-weight:700">${v}</dd></div>`).join('')}</dl>
+    ${open ? `<ol style="margin:22px 0 0;padding-left:20px;color:var(--muted)"><li>Open the event</li><li>Request your place</li><li>Check in on the night and play</li></ol>` : '<p class="lede">This event has finished. Results and stats are in the app.</p>'}
+    <div style="display:grid;gap:10px;margin-top:22px">
+      ${e.url ? `<a class="btn btn-primary" href="${e.url}" target="_blank" rel="noopener">${open ? 'View &amp; register' : 'View results'} ↗</a>` : `<button class="btn btn-primary" type="button" data-swap="dlg-app">${open ? 'Join in the app' : 'See results in the app'}</button>`}
+    </div>`;
+  document.getElementById('dlg-event').showModal();
+}
+document.querySelectorAll('[data-kind]').forEach((b, _, all) => b.addEventListener('click', () => { all.forEach((x) => x.setAttribute('aria-pressed', x === b)); state.kind = b.dataset.kind; renderEvents(); }));
+document.querySelectorAll('[data-status]').forEach((b, _, all) => b.addEventListener('click', () => { all.forEach((x) => x.setAttribute('aria-pressed', x === b)); state.status = b.dataset.status; renderEvents(); }));
+document.getElementById('search').addEventListener('submit', (ev) => { ev.preventDefault(); state.q = document.getElementById('q').value; state.when = document.getElementById('when').value; state.format = document.getElementById('format').value; renderEvents(); });
+document.getElementById('q').addEventListener('input', (ev) => { state.q = ev.target.value; renderEvents(); });
+renderEvents();
+
+/* Happening now (Live & results) */
+document.getElementById('live-now').innerHTML = EVENTS.filter((e) => e.status === 'live').map((e) => `
+  <article class="card" style="padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div style="min-width:0"><div style="display:flex;gap:6px">${statusChip('live')}<span class="chip">${e.format}</span></div><h3 style="margin-top:8px">${e.name}</h3><div class="meta"><span>${e.venue}${e.town ? ' · ' + e.town : ''}</span></div></div>
+    <button class="btn btn-line" type="button" data-event="${e.name}">View →</button>
+  </article>`).join('');
+document.querySelectorAll('[data-event]').forEach((b) => b.addEventListener('click', () => openEvent(EVENTS.find((e) => e.name === b.dataset.event))));
+
+/* ---------- Explore the app: feature panels ---------- */
+const FILM = '1UNFKiUdBXnoALdj_3eA_CND9AmYlOZfy';
+const FEATURES = {
+  formats: { title: 'Tournament formats', benefit: 'Pick the format that suits your night.', desc: 'Groups, brackets and draws are set up for you.', shots: ['bracket', 'rr-groups-ab', 'rumble-draw'], bullets: ['Knockout and round robin, with groups and a knockout stage', 'Royal Rumble: random draws until one champion is left', 'Singles or pairs'] },
+  leagues: { title: 'Premier Leagues & Series', benefit: 'Weekly fixtures that build to a finals night.', desc: 'Find a league near you and play it week by week.', shots: ['join-league'], bullets: ['Find a league by distance and day', 'Fixtures and standings every week', 'The top four qualify for the finals'] },
+  kiosk: { title: 'Kiosk & social games', benefit: 'Turn up, pick a game, play.', desc: 'Big Fish Social runs casual games for groups and guests.', shots: ['social-party', 'social-games', 'arcade-hit20', 'arcade-killer'], bullets: ['Singles or doubles, guests welcome', 'X01, Killer, Around the World, Halve It, Cricket, Royal Rumble and Chase', 'A session leaderboard with gold, silver and bronze'] },
+  tv: { title: 'TV & Broadcast', benefit: 'Put the night on the big screen.', desc: '', shots: [], bullets: [], soon: 'A real TV screenshot or clip from Big Fish will be added here.' },
+  fees: { title: 'Entry fees & payments', benefit: 'Every event shows its entry clearly.', desc: 'Events can be free or pay at the door.', shots: [], bullets: [], soon: 'Big Fish will supply the approved wording on entry fees, payments and venue billing.' },
+  joining: { title: 'Joining an event', benefit: 'Find it, join it, turn up.', desc: 'Players request a place in the app or from a shared link.', shots: ['join-league', 'promo-whatsapp'], bullets: ['Find events near you', 'Request your place, with reserves when an event is full', 'Check in on the night'] },
+  promote: { title: 'Promote your tournament', benefit: 'Fill your board without extra work.', desc: 'Each event gets its own promotion materials.', shots: ['promo-banner', 'promo-whatsapp'], bullets: ['A printable event banner', 'A WhatsApp-ready message with a join link', 'Listed in the app and on this website'] },
+  scoring: { title: 'Scoring & match play', benefit: 'Keep your attention on the board.', desc: 'Simple scoring, checkout guidance and connected match results.', shots: ['live-scoring'], bullets: ['Match settings', 'Scoring and checkout guidance', 'Recorded results and stats'] },
+  stats: { title: 'Player statistics', benefit: 'Know your game, number by number.', desc: 'Every match feeds your personal stats.', shots: ['stats-overview', 'stats-scoring', 'stats-checkouts', 'stats-doubles'], bullets: ['3-dart average, checkout % and leg difference', '100+, 140+ and 180 counts and first-9 average', 'Doubles hit and missed, shown on the board'] },
+  night: { title: 'Run the night', benefit: 'The app keeps the night moving.', desc: 'Groups, brackets and results stay in one place.', shots: ['rr-groups-d', 'bracket'], bullets: ['Groups and brackets generated for you', 'Live, completed and upcoming matches at a glance', 'Results go straight into the rankings'] },
+  practice: { title: 'Practice & Codfather', benefit: 'Sharpen up between match nights.', desc: 'Arcade games for solo and group practice.', shots: ['arcade-hit20', 'arcade-killer'], bullets: ['Arcade games like Around the World and Killer', 'Practise on your own or with friends'], soon: 'Codfather screens will be added once Big Fish supplies them.' },
+  real: { title: 'Real venues & players', benefit: 'Real nights at real venues.', desc: 'From the Big Fish Darts League photoshoot.', photos: ['players-board', 'p32', 'p64', 'p43', 'p22', 'p58'], bullets: [] },
+};
+const LEFT = ['formats', 'leagues', 'kiosk', 'tv', 'fees'];
+const RIGHT = ['joining', 'promote', 'scoring', 'stats', 'night'];
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+const tile = (k) => `<button class="tile" type="button" data-feature="${k}"><span>${FEATURES[k].title}${FEATURES[k].soon && !FEATURES[k].shots.length ? '<small>Coming soon</small>' : ''}</span>${arrow}</button>`;
+document.getElementById('tiles-left').innerHTML = LEFT.map(tile).join('');
+document.getElementById('tiles-right').innerHTML = RIGHT.map(tile).join('');
+let lastFeatureBtn = null;
+function openFeature(k, btn) {
+  const f = FEATURES[k]; lastFeatureBtn = btn || null;
+  const media = f.photos
+    ? `<div class="shots" style="flex-wrap:wrap">${f.photos.map((p) => `<img class="wide" src="img/photos/${p}.webp" alt="Big Fish Darts League photo" loading="lazy">`).join('')}</div>`
+    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: app screen" loading="lazy" class="${s.startsWith('promo') ? 'wide' : ''}">`).join('')}</div>` : '';
+  document.getElementById('feat-body').innerHTML = `
+    <div>
+      <h2 id="feat-t">${f.title}</h2>
+      <p class="benefit">${f.benefit}</p>
+      ${f.desc ? `<p class="desc">${f.desc}</p>` : ''}
+      ${f.bullets.length ? `<ul>${f.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>` : ''}
+      ${f.soon ? `<p class="soon">${f.soon}</p>` : ''}
+      <div class="film"><button class="btn btn-primary btn-block" type="button" data-film-inline>▷ Watch the League film</button></div>
+    </div>
+    <div>${media || '<div class="shots" style="min-height:260px;align-items:center;color:var(--muted)">Screen to follow</div>'}</div>`;
+  const dlg = document.getElementById('dlg-feature');
+  dlg.showModal(); dlg.scrollTop = 0;
+}
+function filmInto(el) {
+  const f = document.createElement('iframe');
+  f.src = `https://drive.google.com/file/d/${FILM}/preview`; f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'Big Fish Darts League film';
+  el.replaceWith(f);
+}
+document.addEventListener('click', (e) => {
+  const fb = e.target.closest('[data-feature]'); if (fb) openFeature(fb.dataset.feature, fb);
+  const fi = e.target.closest('[data-film-inline]'); if (fi) filmInto(fi);
+  const fm = e.target.closest('[data-film]'); if (fm) { openFeature('scoring'); setTimeout(() => { const b = document.querySelector('[data-film-inline]'); if (b) filmInto(b); }, 0); }
+});
+document.getElementById('dlg-feature').addEventListener('close', () => { if (lastFeatureBtn) lastFeatureBtn.focus(); });
+
+/* ---------- Tabs (top tabs, bottom nav, in-page links) with #hash links ---------- */
+const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
+function selectTab(id, focus) {
+  tabs.forEach((t) => { const on = t.getAttribute('aria-controls') === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById(t.getAttribute('aria-controls')).hidden = !on; if (on && focus) t.focus(); });
+  document.querySelectorAll('.bottom-nav [data-go]').forEach((b) => b.setAttribute('aria-current', b.dataset.go === id));
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({ top: 0 });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectTab(t.getAttribute('aria-controls')));
+  t.addEventListener('keydown', (e) => { const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (d) { e.preventDefault(); selectTab(tabs[(i + d + tabs.length) % tabs.length].getAttribute('aria-controls'), true); } });
+});
+document.addEventListener('click', (e) => { const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); selectTab(g.dataset.go); } });
+const start = location.hash.slice(1);
+if (['tournaments', 'live', 'venues', 'app'].includes(start)) selectTab(start);
+
+/* ---------- Dialogs, portals, lightbox, videos ---------- */
+document.addEventListener('click', (e) => {
+  const o = e.target.closest('[data-open]');
+  if (o) {
+    const d = document.getElementById(o.dataset.open); d.showModal();
+    if (o.dataset.portal) { const p = document.getElementById('portal-' + o.dataset.portal); p.style.background = 'var(--soft)'; setTimeout(() => (p.style.background = ''), 1600); }
+  }
+  const s = e.target.closest('[data-swap]'); if (s) { s.closest('dialog').close(); document.getElementById(s.dataset.swap).showModal(); }
+  if (e.target.closest('[data-close]')) e.target.closest('dialog').close();
+  if (e.target.tagName === 'DIALOG') e.target.close();
+});
+const lb = document.getElementById('lightbox');
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.gallery button, .gal-btn, .feat .shots img');
+  if (!b) return;
+  const img = b.tagName === 'IMG' ? b : b.querySelector('img');
+  lb.querySelector('img').src = img.src; lb.querySelector('img').alt = img.alt; lb.showModal();
+});
+document.querySelectorAll('[data-video]').forEach((b) => b.addEventListener('click', () => {
+  const f = document.createElement('iframe');
+  f.src = `https://drive.google.com/file/d/${b.dataset.video}/preview`; f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = b.getAttribute('aria-label');
+  b.replaceWith(f);
+}));
+</script>
+</body>
+</html>
