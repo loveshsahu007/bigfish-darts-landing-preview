@@ -113,8 +113,7 @@
     .tiles .tile { min-height: 64px; }
     .phone-stage { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 18px; padding: 22px; border-radius: var(--r); background: var(--soft); }
     .phone-stage .phone { width: min(220px, 100%); }
-    .more { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
-    .more .btn { min-width: 240px; }
+    .more { margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 
     /* ---------- Watch ---------- */
     .watch { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin-top: 24px; align-items: center; }
@@ -169,9 +168,10 @@
       .floats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; }
       .tilerow, .loop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .week { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .explore { grid-template-columns: minmax(0, 1fr); }
-      .explore .phone-stage { order: -1; }
-      .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .explore { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .explore .phone-stage { order: -1; grid-column: 1 / -1; margin-bottom: 6px; }
+      .tiles { display: contents; }
+      .more .btn { padding-inline: 10px; font-size: 14px; white-space: normal; line-height: 1.25; }
       .tiles .tile { min-height: 58px; font-size: 15px; padding: 0 14px; }
       .feat { grid-template-columns: minmax(0, 1fr); padding: 18px; }
       .story { min-height: 0; }
@@ -464,7 +464,7 @@ function render() {
   document.getElementById('feat-eyebrow').textContent = S.eyebrow;
   document.getElementById('tiles-left').innerHTML = S.left.map(tile).join('');
   document.getElementById('tiles-right').innerHTML = S.right.map(tile).join('');
-  document.getElementById('more').innerHTML = S.more.map((k) => `<button class="btn btn-line" type="button" data-feature="${k}">${F[k].t} →</button>`).join('');
+  document.getElementById('more').innerHTML = S.more.map((k) => `<button class="btn btn-line" type="button" data-feature="${k}">${F[k].t}&nbsp;→</button>`).join('');
   document.getElementById('feat-phone').src = src(S.phone);
   const W = STORIES[audience];
   document.getElementById('watch-eyebrow').textContent = W.eyebrow;
