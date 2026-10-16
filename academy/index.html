@@ -166,8 +166,10 @@
       .stage { min-height: 0; flex-direction: column; gap: 14px; }
       .float { position: static; width: 100%; }
       .floats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; }
+      .floats .float:last-child:nth-child(odd) { grid-column: 1 / -1; }
       .tilerow, .loop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .week { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .week .day:last-child { grid-column: span 2; }
       .explore { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
       .explore .phone-stage { order: -1; grid-column: 1 / -1; margin-bottom: 6px; }
       .tiles { display: contents; }
@@ -189,6 +191,11 @@
       .btn-big { width: 100%; }
       .tilerow, .loop-grid { grid-template-columns: minmax(0, 1fr); }
       .week { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .week .day:last-child { grid-column: 1 / -1; min-height: 0; }
+      .swatches { display: grid; grid-template-columns: repeat(5, 40px) minmax(0, 1fr); align-items: center; gap: 12px; }
+      .swatches > span:first-child { grid-area: 1 / 1 / 2 / 4; margin: 0; }
+      .swatches .sw-name { grid-area: 1 / 4 / 2 / -1; }
+      .swatches .sw { grid-row: 2; }
       .tablet { width: 240px; }
       dialog { max-width: 100vw; max-height: 100vh; height: 100%; border-radius: 0; margin: 0; }
       .feat .shots { justify-content: flex-start; }

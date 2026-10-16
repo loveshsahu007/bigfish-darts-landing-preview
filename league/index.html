@@ -103,6 +103,8 @@
     .car-btn.prev { left: 12px; } .car-btn.next { right: 12px; }
     .dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; }
     .dots button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+    .dots button { position: relative; }
+    .dots button::before { content: ""; position: absolute; inset: -14px -5px; }
     .dots button[aria-current="true"] { background: #fff; width: 22px; border-radius: 5px; }
     /* Device frames for app screenshots */
     .device { border: 6px solid #0e1630; border-radius: 22px; background: #0e1630; overflow: hidden; box-shadow: 0 16px 30px -16px rgba(14,22,48,0.5); }

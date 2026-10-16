@@ -7,7 +7,6 @@
   <meta name="description" content="Big Fish Darts — connecting the world through darts. Enter Big Fish Darts League for tournaments and league nights, or Big Fish Darts Academy for training and coaching.">
   <link rel="canonical" href="https://www.bigfishdarts.com/">
   <meta name="theme-color" content="#101a3c">
-  <meta name="robots" content="noindex, nofollow">
   <meta property="og:title" content="Big Fish Darts | Connecting the World through Darts">
   <meta property="og:description" content="Enter Big Fish Darts League or Big Fish Darts Academy.">
   <meta property="og:type" content="website">
@@ -135,7 +134,7 @@
       .top { padding: 16px 18px 14px; }
       .mark img { width: 42px; }
       .mark .brand { font-size: 24px; }
-      .mark .sub { font-size: 10px; letter-spacing: 0.14em; }
+      .mark .sub { font-size: 11px; letter-spacing: 0.12em; }
       .contact { padding: 0 14px; }
       .contact span { display: none; }
       .rule { width: calc(100% - 36px); }
@@ -253,7 +252,7 @@
     const canvas = document.getElementById('globe');
     if (!window.d3 || !window.topojson) return;
     let world;
-    try { world = await (await fetch('data/land-110m.json')).json(); } catch (e) { return; }
+    try { world = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json')).json(); } catch (e) { return; }
     const land = topojson.feature(world, world.objects.land);
     const ctx = canvas.getContext('2d');
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
