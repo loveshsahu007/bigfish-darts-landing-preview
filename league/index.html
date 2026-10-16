@@ -86,6 +86,28 @@
     .search label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 700; }
     .search input, .search select { width: 100%; min-height: 48px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
     .search .btn { min-height: 48px; padding: 0 28px; }
+    .loc { display: flex; gap: 8px; }
+    .loc input { flex: 1; min-width: 0; }
+    .loc .btn { min-height: 48px; padding: 0 14px; gap: 6px; font-size: 14px; }
+    .loc .btn svg { width: 18px; height: 18px; }
+    .search-status { margin: 10px 0 0; font-size: 14px; color: var(--muted); min-height: 1.4em; }
+    .search-status b { color: var(--ink); }
+    .search-status.err { color: #b4232f; }
+    .dist { font-weight: 700; color: var(--sapphire); }
+    /* Photo carousel (manual only, no autoplay) */
+    .carousel { position: relative; min-height: 300px; background: var(--navy); }
+    .track { position: absolute; inset: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+    .track::-webkit-scrollbar { display: none; }
+    .track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
+    .car-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,0.92); color: var(--navy); font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 4px 12px rgba(14,22,48,0.25); }
+    .car-btn.prev { left: 12px; } .car-btn.next { right: 12px; }
+    .dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; }
+    .dots button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+    .dots button[aria-current="true"] { background: #fff; width: 22px; border-radius: 5px; }
+    /* Device frames for app screenshots */
+    .device { border: 6px solid #0e1630; border-radius: 22px; background: #0e1630; overflow: hidden; box-shadow: 0 16px 30px -16px rgba(14,22,48,0.5); }
+    .device img { width: 100%; }
+    .zoom { padding: 0; border: 0; background: none; cursor: zoom-in; }
     .t-bar { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
     .seg { display: inline-flex; padding: 4px; gap: 2px; border-radius: 10px; background: #e3e7f0; }
     .seg button { min-height: 38px; padding: 0 16px; border: 0; border-radius: 7px; background: none; font-weight: 700; font-size: 14px; color: var(--muted); cursor: pointer; }
@@ -112,8 +134,8 @@
     /* ---------- Live & results ---------- */
     .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
     .shot-card { overflow: hidden; display: flex; flex-direction: column; }
-    .shot-card .shot { background: var(--rhino); padding: 16px 16px 0; display: flex; justify-content: center; height: 300px; overflow: hidden; }
-    .shot-card .shot img { width: 78%; border-radius: 14px 14px 0 0; object-fit: cover; object-position: top; }
+    .shot-card .shot { background: var(--soft); padding: 22px; display: flex; justify-content: center; align-items: center; height: 360px; }
+    .shot-card .device { width: 160px; }
     .shot-card .txt { padding: 16px; }
     .shot-card p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
     .live-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
@@ -192,6 +214,7 @@
     @media (max-width: 860px) {
       .search { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
       .search .where { grid-column: 1 / -1; }
+      .carousel { min-height: 0; aspect-ratio: 4 / 3; }
       .search .btn { grid-column: 1 / -1; }
       .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .steps { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -266,30 +289,33 @@
 
     <form class="search" id="search" role="search">
       <div class="where">
-        <label for="q">Town, city or country</label>
-        <input id="q" type="search" placeholder="Where do you want to play?" autocomplete="off">
+        <label for="q">Postcode or town</label>
+        <div class="loc">
+          <input id="q" type="search" placeholder="e.g. LA13 0JY or Barrow" autocomplete="postal-code">
+          <button class="btn btn-line" type="button" id="use-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg><span>Use my location</span></button>
+        </div>
       </div>
       <div>
-        <label for="when">When</label>
-        <select id="when">
-          <option value="">Any date</option>
-          <option value="today">Today</option>
-          <option value="week">Next 7 days</option>
-          <option value="month">Next 30 days</option>
+        <label for="radius">Distance</label>
+        <select id="radius">
+          <option value="">Any distance</option>
+          <option value="5">Within 5 km</option>
+          <option value="10">Within 10 km</option>
+          <option value="25">Within 25 km</option>
+          <option value="50" selected>Within 50 km</option>
+          <option value="100">Within 100 km</option>
         </select>
       </div>
       <div>
-        <label for="format">Format</label>
-        <select id="format">
-          <option value="">All formats</option>
-          <option>Knockout</option>
-          <option>Round Robin</option>
-          <option>Royal Rumble</option>
-          <option>Premier League</option>
+        <label for="day">Day</label>
+        <select id="day">
+          <option value="">All days</option>
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
         </select>
       </div>
       <button class="btn btn-primary" type="submit">Search →</button>
     </form>
+    <p class="search-status" id="search-status" aria-live="polite">Enter a postcode or town, or use your location, to find events near you.</p>
 
     <div class="t-bar">
       <div class="seg" role="group" aria-label="Event type">
@@ -317,7 +343,19 @@
           <button class="btn btn-line" type="button" data-open="dlg-portals" data-portal="manager">Manager portal ↗</button>
         </div>
       </div>
-      <img src="img/photos/players-board.webp" alt="Big Fish Darts League players at a branded board" loading="lazy">
+      <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Photos from Big Fish Darts League nights">
+        <div class="track" id="track">
+          <img src="img/photos/players-board.webp" alt="League players at a Big Fish Darts branded board">
+          <img src="img/photos/p32.webp" alt="League players at the bar of the White Lion" loading="lazy">
+          <img src="img/photos/p64.webp" alt="Players sharing a drink between matches" loading="lazy">
+          <img src="img/photos/p31.webp" alt="Players in Big Fish shirts at the pub" loading="lazy">
+          <img src="img/photos/p43.webp" alt="A player collecting darts from a Big Fish board" loading="lazy">
+          <img src="img/photos/p22.webp" alt="A league player at the bar" loading="lazy">
+        </div>
+        <button class="car-btn prev" type="button" aria-label="Previous photo">‹</button>
+        <button class="car-btn next" type="button" aria-label="Next photo">›</button>
+        <div class="dots" id="dots"></div>
+      </div>
     </div>
   </section>
 
@@ -332,10 +370,10 @@
 
     <h2 style="margin-top: 36px; font-size: 22px">How results look in the app</h2>
     <div class="grid-4" style="margin-top: 14px">
-      <article class="card shot-card"><div class="shot"><img src="img/app/bracket.webp" alt="Tournament bracket with completed, live and upcoming matches" loading="lazy"></div><div class="txt"><h3>Brackets</h3><p>Completed, live and upcoming matches at a glance.</p></div></article>
-      <article class="card shot-card"><div class="shot"><img src="img/app/rr-groups-ab.webp" alt="Round robin group table with legs won, legs lost and averages" loading="lazy"></div><div class="txt"><h3>Group tables</h3><p>Wins, legs and averages for every group.</p></div></article>
-      <article class="card shot-card"><div class="shot"><img src="img/app/live-scoring.webp" alt="Live scoring screen for a two-player leg" loading="lazy"></div><div class="txt"><h3>Live scoring</h3><p>Every visit scored, with checkout suggestions.</p></div></article>
-      <article class="card shot-card"><div class="shot"><img src="img/app/rumble-winner.webp" alt="Royal Rumble winner screen" loading="lazy"></div><div class="txt"><h3>Winners</h3><p>Champions crowned and recorded in the app.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/bracket.webp" alt="Tournament bracket with completed, live and upcoming matches" loading="lazy"></div></button></div><div class="txt"><h3>Brackets</h3><p>Completed, live and upcoming matches at a glance.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/rr-groups-ab.webp" alt="Round robin group table with legs won, legs lost and averages" loading="lazy"></div></button></div><div class="txt"><h3>Group tables</h3><p>Wins, legs and averages for every group.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/live-scoring.webp" alt="Live scoring screen for a two-player leg" loading="lazy"></div></button></div><div class="txt"><h3>Live scoring</h3><p>Every visit scored, with checkout suggestions.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/rumble-winner.webp" alt="Royal Rumble winner screen" loading="lazy"></div></button></div><div class="txt"><h3>Winners</h3><p>Champions crowned and recorded in the app.</p></div></article>
     </div>
     <div style="margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px">
       <button class="btn btn-primary" type="button" data-open="dlg-app">Follow live scores in the app</button>
@@ -379,8 +417,8 @@
         <h2>Promotion, done for you</h2>
         <p class="lede">Every event gets a printable banner and a WhatsApp-ready share message with a join link.</p>
         <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
-          <button class="gal-btn" style="padding: 0; border: 0; background: none; cursor: zoom-in" aria-label="Enlarge event banner"><img src="img/app/promo-banner.webp" alt="Printable event banner for a 24-player round robin" width="200" style="width: 200px; border-radius: 10px; border: 1px solid var(--line)"></button>
-          <button class="gal-btn" style="padding: 0; border: 0; background: none; cursor: zoom-in" aria-label="Enlarge WhatsApp share message"><img src="img/app/promo-whatsapp.webp" alt="WhatsApp message with event details and a join link" width="220" style="width: 220px; border-radius: 10px; border: 1px solid var(--line)"></button>
+          <button class="gal-btn zoom" type="button" aria-label="Enlarge event banner"><div class="device" style="width: 170px; aspect-ratio: 9 / 19; background: #f0f0f0; display: flex; align-items: center"><img src="img/app/promo-banner.webp" alt="Printable event banner for a 24-player round robin"></div></button>
+          <button class="gal-btn zoom" type="button" aria-label="Enlarge WhatsApp share message"><div class="device" style="width: 170px; aspect-ratio: 9 / 19; background: #efe7dc; display: flex; align-items: center"><img src="img/app/promo-whatsapp.webp" alt="WhatsApp message with event details and a join link"></div></button>
         </div>
       </div>
     </div>
@@ -495,30 +533,35 @@
 <script>
 /* ---------- Events: real listings from the Big Fish Darts League app (15 Oct 2026) ---------- */
 const TODAY = new Date('2026-10-15T12:00:00');
+/* Coordinates: the live feed provides each event's host coordinates (used for New Trinity).
+   League coordinates below are approximate town locations for this prototype; Car Port Inn
+   and The Station Hotel have no location yet, so they only show with "Any distance". */
 const EVENTS = [
-  { kind: 'tournament', name: 'Round Robin 24 Persons', venue: 'Car Port Inn', town: '', start: '2026-10-15', time: '11:00', format: 'Round Robin', game: '101', match: 'Best of 1', lineup: 'Singles', seats: 24, joined: 24, entry: '', age: 'All ages', groups: '4 groups of 6', status: 'live', url: 'https://bigfishdartsleague.com/tournament-details/?id=75jbn9Eb9WGN85JIZhlz' },
-  { kind: 'tournament', name: 'New Trinity Tuesday Round Robin', venue: 'New Trinity Club', town: 'Hull', start: '2026-10-20', time: '18:30', format: 'Round Robin', game: '501', match: 'Best of 3', lineup: 'Singles', seats: 24, joined: 2, entry: 'Free · pay at the door', age: 'All ages', groups: '4 groups of 6', status: 'upcoming', url: 'https://bigfishdartsleague.com/tournament-details/?id=88lzlmzuu2eyF0sZrYmU' },
-  { kind: 'league', name: 'Crofters Wednesday Night Autumn', venue: 'Crofters', town: 'Barrow', start: '2026-09-30', end: '18 Nov', time: 'Wednesdays 19:30', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 5, entry: '', age: '', groups: '', status: 'live' },
-  { kind: 'league', name: 'The Station Hotel Premier League', venue: 'The Station Hotel and Sports Bar', town: '', start: '2026-07-30', end: '17 Sep', time: '19:00', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 8, entry: '', age: '', groups: '', status: 'past' },
-  { kind: 'league', name: 'Askam Rugby Wednesday League', venue: 'Askam Rugby Club', town: 'Askam-in-Furness', start: '2026-03-16', end: '24 May', time: 'Wednesdays 19:30', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 8, entry: '', age: '', groups: '', status: 'past' },
+  { kind: 'tournament', name: 'Round Robin 24 Persons', venue: 'Car Port Inn', town: '', start: '2026-10-15', time: '11:00', format: 'Round Robin', game: '101', match: 'Best of 1', lineup: 'Singles', seats: 24, joined: 24, entry: '', age: 'All ages', groups: '4 groups of 6', status: 'live', url: 'https://bigfishdartsleague.com/tournament-details/?id=75jbn9Eb9WGN85JIZhlz', lat: null, lng: null },
+  { kind: 'tournament', name: 'New Trinity Tuesday Round Robin', venue: 'New Trinity Club', town: 'Hull', start: '2026-10-20', time: '18:30', format: 'Round Robin', game: '501', match: 'Best of 3', lineup: 'Singles', seats: 24, joined: 2, entry: 'Free · pay at the door', age: 'All ages', groups: '4 groups of 6', status: 'upcoming', url: 'https://bigfishdartsleague.com/tournament-details/?id=88lzlmzuu2eyF0sZrYmU', lat: 54.0910, lng: -3.1544 },
+  { kind: 'league', name: 'Crofters Wednesday Night Autumn', venue: 'Crofters', town: 'Barrow', start: '2026-09-30', end: '18 Nov', time: 'Wednesdays 19:30', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 5, entry: '', age: '', groups: '', status: 'live', lat: 54.1108, lng: -3.2261 },
+  { kind: 'league', name: 'The Station Hotel Premier League', venue: 'The Station Hotel and Sports Bar', town: '', start: '2026-07-30', end: '17 Sep', time: '19:00', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 8, entry: '', age: '', groups: '', status: 'past', lat: null, lng: null },
+  { kind: 'league', name: 'Askam Rugby Wednesday League', venue: 'Askam Rugby Club', town: 'Askam-in-Furness', start: '2026-03-16', end: '24 May', time: 'Wednesdays 19:30', format: 'Premier League', game: '', match: '', lineup: '', seats: 8, joined: 8, entry: '', age: '', groups: '', status: 'past', lat: 54.1893, lng: -3.2050 },
 ];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const state = { kind: 'tournament', status: 'all', q: '', when: '', format: '' };
+const state = { kind: 'tournament', status: 'all', origin: null, radius: 50, day: '' };
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+function km(a, b) {
+  const R = 6371, r = (x) => x * Math.PI / 180;
+  const dLat = r(b.lat - a.lat), dLng = r(b.lng - a.lng);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+const weekday = (e) => DAYS[new Date(e.start + 'T12:00:00').getDay()];
 const statusChip = (s) => s === 'live' ? '<span class="chip chip-live">Live</span>' : s === 'upcoming' ? '<span class="chip chip-ok">Upcoming</span>' : '<span class="chip chip-grey">Past</span>';
 function dateBlock(iso) { const d = new Date(iso + 'T12:00:00'); return `<div class="date" aria-hidden="true"><span>${MONTHS[d.getMonth()]}</span><b>${d.getDate()}</b><span>${d.getFullYear()}</span></div>`; }
-function inWindow(e) {
-  if (!state.when) return true;
-  const d = new Date(e.start + 'T12:00:00'); const days = (d - TODAY) / 864e5;
-  if (state.when === 'today') return e.start === '2026-10-15' || e.status === 'live';
-  if (state.when === 'week') return days >= -1 && days <= 7 || e.status === 'live';
-  if (state.when === 'month') return days >= -1 && days <= 30 || e.status === 'live';
-  return true;
-}
 function renderEvents() {
-  const q = state.q.trim().toLowerCase();
-  const list = EVENTS.filter((e) => e.kind === state.kind && (state.status === 'all' || e.status === state.status) && (!state.format || e.format === state.format) && (!q || `${e.name} ${e.venue} ${e.town}`.toLowerCase().includes(q)) && inWindow(e));
+  const list = EVENTS.map((e) => ({ ...e, away: state.origin && e.lat != null ? km(state.origin, e) : null }))
+    .filter((e) => e.kind === state.kind && (state.status === 'all' || e.status === state.status) && (!state.day || weekday(e) === state.day)
+      && (!state.origin || !state.radius || (e.away != null && e.away <= state.radius)))
+    .sort((a, b) => (a.away ?? 1e9) - (b.away ?? 1e9));
   const box = document.getElementById('events');
-  box.innerHTML = list.length ? '' : `<div class="card empty">No ${state.kind === 'league' ? 'leagues' : 'tournaments'} match your search. Try another town, date or format.</div>`;
+  box.innerHTML = list.length ? '' : `<div class="card empty">No ${state.kind === 'league' ? 'leagues' : 'tournaments'} found${state.origin && state.radius ? ` within ${state.radius} km` : ''}${state.day ? ` on ${state.day}s` : ''}. Try a wider distance or another day.</div>`;
   list.forEach((e) => {
     const full = e.joined >= e.seats;
     const el = document.createElement('article');
@@ -527,7 +570,7 @@ function renderEvents() {
       <div style="min-width:0">
         <div style="display:flex;flex-wrap:wrap;gap:6px">${statusChip(e.status)}<span class="chip">${e.format}</span>${full && e.status !== 'past' ? '<span class="chip chip-full">Full</span>' : ''}</div>
         <h3>${e.name}</h3>
-        <div class="meta"><span>${e.venue}${e.town ? ' · ' + e.town : ''}</span><span>${e.end ? 'Until ' + e.end + ' · ' : ''}${e.time}${e.lineup ? ' · ' + e.lineup : ''}${e.game ? ' · ' + e.game : ''}</span></div>
+        <div class="meta"><span>${e.venue}${e.town ? ' · ' + e.town : ''}</span>${e.away != null ? `<span class="dist">${e.away < 1 ? 'Under 1' : Math.round(e.away)} km away</span>` : ''}<span>${e.end ? 'Until ' + e.end + ' · ' : ''}${e.time}${e.lineup ? ' · ' + e.lineup : ''}${e.game ? ' · ' + e.game : ''}</span></div>
       </div>
       <div class="event-side">
         <div><div class="spots">${e.status === 'past' ? 'Finished' : full ? `${e.seats}/${e.seats} players` : `${e.seats - e.joined} of ${e.seats} spots left`}</div>${e.status !== 'past' ? `<div class="bar" aria-hidden="true"><i style="width:${Math.min(100, e.joined / e.seats * 100)}%"></i></div>` : ''}</div>
@@ -552,8 +595,63 @@ function openEvent(e) {
 }
 document.querySelectorAll('[data-kind]').forEach((b, _, all) => b.addEventListener('click', () => { all.forEach((x) => x.setAttribute('aria-pressed', x === b)); state.kind = b.dataset.kind; renderEvents(); }));
 document.querySelectorAll('[data-status]').forEach((b, _, all) => b.addEventListener('click', () => { all.forEach((x) => x.setAttribute('aria-pressed', x === b)); state.status = b.dataset.status; renderEvents(); }));
-document.getElementById('search').addEventListener('submit', (ev) => { ev.preventDefault(); state.q = document.getElementById('q').value; state.when = document.getElementById('when').value; state.format = document.getElementById('format').value; renderEvents(); });
-document.getElementById('q').addEventListener('input', (ev) => { state.q = ev.target.value; renderEvents(); });
+/* Location search: postcodes and towns via postcodes.io (free UK service), or the device location. */
+const statusEl = document.getElementById('search-status');
+function setStatus(html, err) { statusEl.innerHTML = html; statusEl.classList.toggle('err', !!err); }
+function describe() {
+  const where = state.origin ? (state.radius ? `within <b>${state.radius} km</b> of <b>${state.origin.label}</b>` : `near <b>${state.origin.label}</b>, sorted by distance`) : 'everywhere';
+  setStatus(`Showing ${state.kind === 'league' ? 'leagues' : 'tournaments'} ${where}${state.day ? ` on <b>${state.day}s</b>` : ''}.`);
+}
+async function geocode(q) {
+  const pc = q.replace(/\s+/g, '').toUpperCase();
+  const get = async (u) => { const r = await fetch(u); if (!r.ok) return null; return (await r.json()).result; };
+  if (/^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(pc)) { const r = await get(`https://api.postcodes.io/postcodes/${pc}`); if (r) return { lat: r.latitude, lng: r.longitude, label: r.postcode }; }
+  if (/^[A-Z]{1,2}\d[A-Z\d]?$/.test(pc)) { const r = await get(`https://api.postcodes.io/outcodes/${pc}`); if (r) return { lat: r.latitude, lng: r.longitude, label: r.outcode }; }
+  const r = await get(`https://api.postcodes.io/places?q=${encodeURIComponent(q.trim())}&limit=1`);
+  if (r && r.length) return { lat: r[0].latitude, lng: r[0].longitude, label: r[0].name_1 };
+  return null;
+}
+document.getElementById('search').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  state.radius = +document.getElementById('radius').value || 0;
+  state.day = document.getElementById('day').value;
+  const q = document.getElementById('q').value.trim();
+  if (q && (!state.origin || state.origin.query !== q)) {
+    setStatus('Finding that location…');
+    try {
+      const o = await geocode(q);
+      if (!o) { state.origin = null; renderEvents(); setStatus(`We couldn't find "${q}". Check the postcode or try a town name.`, true); return; }
+      state.origin = { ...o, query: q };
+    } catch { setStatus('Location search is unavailable right now. Please try again.', true); return; }
+  }
+  if (!q && state.origin && state.origin.query !== '__device__') state.origin = null;
+  renderEvents(); describe();
+});
+document.getElementById('use-loc').addEventListener('click', () => {
+  if (!navigator.geolocation) { setStatus('Your browser cannot share your location. Enter a postcode instead.', true); return; }
+  setStatus('Getting your location…');
+  navigator.geolocation.getCurrentPosition((pos) => {
+    state.origin = { lat: pos.coords.latitude, lng: pos.coords.longitude, label: 'your location', query: '__device__' };
+    document.getElementById('q').value = '';
+    state.radius = +document.getElementById('radius').value || 0; state.day = document.getElementById('day').value;
+    renderEvents(); describe();
+  }, () => setStatus("We couldn't get your location. Allow location access or enter a postcode.", true), { timeout: 10000 });
+});
+['radius', 'day'].forEach((id) => document.getElementById(id).addEventListener('change', () => { state.radius = +document.getElementById('radius').value || 0; state.day = document.getElementById('day').value; renderEvents(); if (state.origin || state.day) describe(); }));
+document.querySelectorAll('[data-kind]').forEach((b) => b.addEventListener('click', () => { if (state.origin || state.day) describe(); }));
+
+/* Photo carousel */
+(function () {
+  const track = document.getElementById('track'), imgs = [...track.children], dots = document.getElementById('dots');
+  dots.innerHTML = imgs.map((_, i) => `<button type="button" aria-label="Photo ${i + 1} of ${imgs.length}"></button>`).join('');
+  const go = (i) => track.scrollTo({ left: track.clientWidth * ((i + imgs.length) % imgs.length) });
+  const cur = () => Math.round(track.scrollLeft / track.clientWidth);
+  const sync = () => [...dots.children].forEach((d, i) => d.setAttribute('aria-current', i === cur()));
+  document.querySelector('.car-btn.prev').addEventListener('click', () => go(cur() - 1));
+  document.querySelector('.car-btn.next').addEventListener('click', () => go(cur() + 1));
+  [...dots.children].forEach((d, i) => d.addEventListener('click', () => go(i)));
+  track.addEventListener('scroll', () => requestAnimationFrame(sync)); sync();
+})();
 renderEvents();
 
 /* Happening now (Live & results) */
@@ -591,7 +689,7 @@ function openFeature(k, btn) {
   const f = FEATURES[k]; lastFeatureBtn = btn || null;
   const media = f.photos
     ? `<div class="shots" style="flex-wrap:wrap">${f.photos.map((p) => `<img class="wide" src="img/photos/${p}.webp" alt="Big Fish Darts League photo" loading="lazy">`).join('')}</div>`
-    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: app screen" loading="lazy" class="${s.startsWith('promo') ? 'wide' : ''}">`).join('')}</div>` : '';
+    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: app screen" loading="lazy" class="">`).join('')}</div>` : '';
   document.getElementById('feat-body').innerHTML = `
     <div>
       <h2 id="feat-t">${f.title}</h2>
@@ -646,7 +744,7 @@ document.addEventListener('click', (e) => {
 });
 const lb = document.getElementById('lightbox');
 document.addEventListener('click', (e) => {
-  const b = e.target.closest('.gallery button, .gal-btn, .feat .shots img');
+  const b = e.target.closest('.gallery button, .gal-btn, .zoom, .feat .shots img');
   if (!b) return;
   const img = b.tagName === 'IMG' ? b : b.querySelector('img');
   lb.querySelector('img').src = img.src; lb.querySelector('img').alt = img.alt; lb.showModal();
