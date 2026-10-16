@@ -142,7 +142,9 @@
     .feat .benefit { margin: 8px 0 0; font-size: 19px; font-weight: 700; }
     .feat .desc { margin: 8px 0 0; color: var(--muted); }
     .feat ul { margin: 16px 0 0; padding-left: 20px; } .feat li { margin: 6px 0; }
-    .feat .shots { display: flex; gap: 10px; justify-content: center; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
+    .feat .shots { display: flex; align-items: flex-start; gap: 10px; justify-content: flex-start; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
+    .feat .shots > img:first-child { margin-left: auto; }
+    .feat .shots > img:last-child { margin-right: auto; }
     .feat .shots img { width: 190px; flex: none; border-radius: 16px; border: 5px solid #0e1630; cursor: zoom-in; }
     .feat .shots img.wide { width: 280px; border-radius: 10px; }
     .list { margin: 0; padding: 0; list-style: none; }
@@ -254,10 +256,10 @@
       <div class="tilerow" data-tiles="ai daily games progress"></div>
 
       <div class="loop">
-        <h2>Assess. Practise. Review. Repeat.</h2>
+        <h2>Assess. Practice. Review. Repeat.</h2>
         <div class="loop-grid">
           <button class="card loop-step" type="button" data-feature="ai"><img src="img/app/live-scan.webp" alt=""><span><b>Assess</b><span>Record your throw for AI analysis.</span></span></button>
-          <button class="card loop-step" type="button" data-feature="daily"><img src="img/app/train.webp" alt=""><span><b>Practise</b><span>Daily challenges and training games.</span></span></button>
+          <button class="card loop-step" type="button" data-feature="daily"><img src="img/app/train.webp" alt=""><span><b>Practice</b><span>Daily challenges and training games.</span></span></button>
           <button class="card loop-step" type="button" data-feature="progress"><img src="img/app/progress.webp" alt=""><span><b>Review</b><span>Rating, skills and trends over time.</span></span></button>
           <button class="card loop-step" type="button" data-feature="plan"><img src="img/app/weekly-plan.webp" alt=""><span><b>Repeat</b><span>A new plan built around your weak areas.</span></span></button>
         </div>
@@ -298,7 +300,7 @@
 
       <div class="loop">
         <h2>The six days between sessions</h2>
-        <p class="lede" style="margin-top: 8px">You coach once a week. The app keeps every player practising the rest of it.</p>
+        <p class="lede" style="margin-top: 8px">You coach once a week. The app keeps every player practicing the rest of it.</p>
         <div class="week">
           <div class="card day you"><b>Day 1</b><strong>Your session</strong><span>Coach, then set the week's plan.</span></div>
           <div class="card day"><b>Day 2</b><strong>Doubles Lockdown</strong><span>Doubles across the board</span></div>
@@ -419,13 +421,13 @@
 const F = {
   ai: { t: 'AI throw analysis', b: 'See what your throw is really doing.', d: 'Record a short video and get a coaching report on your technique.', s: ['live-scan', 'ai-summary', 'ai-improve', 'frame-windup'], l: ['Record 3 to 10 throws on your phone', 'Strengths and areas to improve, from stance to follow-through', 'Frame-by-frame feedback on your wind-up and release'] },
   pro: { t: 'Pro comparison', b: 'Find the pro whose style is closest to yours.', d: 'Your key metrics side by side with professional throwing styles.', s: ['pro-metrics', 'pro-matches'], l: ['Elbow stability, release timing, follow-through and tempo', 'Your closest style matches, with the reasons why', 'Your numbers against the pro for each metric'] },
-  live: { t: 'Live coaching', b: 'Feedback while you practise.', d: 'The camera stays on during practice.', s: ['ai-modes', 'live-scan'], l: ['Instant scores after each throw', 'Spoken coaching cues', 'Body pose detection'] },
+  live: { t: 'Live coaching', b: 'Feedback while you practice.', d: 'The camera stays on during practice.', s: ['ai-modes', 'live-scan'], l: ['Instant scores after each throw', 'Spoken coaching cues', 'Body pose detection'] },
   daily: { t: 'Daily challenges', b: 'A reason to pick up your darts every day.', d: 'Three short games each day.', s: ['train'], l: ['A new daily challenge of three games', 'Keep your streak going', 'Mixes doubles, scoring and trebles'] },
   weekly: { t: 'Big Fish Weekly Challenge', b: 'One test of your whole game, every week.', d: 'Six blocks to complete. It resets weekly.', s: ['weekly-challenge'], l: ['Scoring power, singles, trebles, doubles, checkouts and a championship mix', 'Blocks unlock one after another', 'Your first attempt counts most toward your rating'] },
-  games: { t: 'Training games', b: 'Practise with purpose, not just at treble 20.', d: 'Every game is scored, with accuracy and darts thrown.', s: ['train-games', 'session-history'], l: ['Big Fish Circuit, Treble Attack, Doubles Lockdown, Consistency Ladder, Around the Clock and more', 'Score, accuracy and time for every session', 'Optional AI form scan results'] },
+  games: { t: 'Training games', b: 'Practice with purpose, not just at treble 20.', d: 'Every game is scored, with accuracy and darts thrown.', s: ['train-games', 'session-history'], l: ['Big Fish Circuit, Treble Attack, Doubles Lockdown, Consistency Ladder, Around the Clock and more', 'Score, accuracy and time for every session', 'Optional AI form scan results'] },
   codfather: { t: 'Codfather Mode', b: 'Play under match pressure against AI.', d: '', s: ['train'], l: ['501 against an AI opponent', '20 levels', 'Win to unlock the next level'] },
   checkout: { t: 'Full Checkout Challenge', b: 'A lifetime goal for every player.', d: '', s: ['train'], l: ['Complete every checkout from 2 to 170', 'Tracks the finishes you have done'] },
-  plan: { t: 'Daily tasks & weekly plan', b: 'Always know what to practise next.', d: 'An AI-personalised 7-day schedule built around your weak areas.', s: ['weekly-plan', 'coach-task'], l: ['A focus for the week, like doubles', 'A game and a target for every day', 'Tasks from your coach appear too'] },
+  plan: { t: 'Daily tasks & weekly plan', b: 'Always know what to practice next.', d: 'An AI-personalised 7-day schedule built around your weak areas.', s: ['weekly-plan', 'coach-task'], l: ['A focus for the week, like doubles', 'A game and a target for every day', 'Tasks from your coach appear too'] },
   progress: { t: 'Your progress', b: 'See your game improve, week by week.', d: 'Your BFDAR rating, grade and momentum, with six skills behind it.', s: ['home', 'skills-radar', 'progress'], l: ['Accuracy, consistency, doubles, scoring, pressure and AI form', 'Score, accuracy and doubles trends over 7, 30 or 90 days', 'An AI insight on what to focus on'] },
   board: { t: 'Train the whole board', b: 'Singles, trebles, doubles and checkouts.', d: 'Practice goes well beyond treble 20.', s: ['weekly-challenge', 'train-games'], l: ['Singles and trebles on 20, 19 and 18', 'Doubles from D20 down to D4', 'Checkout doubles to close out a leg'] },
   muscle: { t: 'Muscle memory', b: 'Repeat a good throw until it is automatic.', d: 'Short, regular sessions build a consistent routine.', s: ['session-history'], l: ['Consistency Ladder and Around the Clock reward repeatable throws', 'Daily challenges keep the routine going'] },
@@ -437,17 +439,18 @@ const F = {
   groups: { t: 'Groups', b: 'Organise your squad.', d: '', s: ['groups'], l: ['Put players into training groups', 'Add or remove players any time'] },
   follow: { t: 'Follow every player', b: 'Spot progress and problems early.', d: 'Ratings, skills and sessions for each player.', s: ['player-details', 'skills-radar', 'home'], l: ['Rating and skill breakdown for every player', 'Session history and task status', 'Momentum shows who is improving or dropping'] },
   howai: { t: 'How AI helps', b: 'More coaching from every session.', d: 'The AI reviews recorded throws and builds plans around weak areas.', s: ['ai-improve', 'frame-follow', 'weekly-plan'], l: ['Strengths and areas to improve for each player', 'Frame-by-frame technique feedback', 'Weekly plans built from each player\'s weak areas'] },
-  between: { t: 'Between sessions', b: 'Stay in touch all week.', d: 'Players see your tasks and can chat with you in the app.', s: ['coach-task', '@bullseye'], l: ['Chat with your players', 'Pending tasks from you on their home screen', 'A weekly tracker of the days they practised'] },
-  jdc: { t: 'JDC challenge', b: 'Screens to follow.', d: '', s: [], l: [], soon: 'The JDC challenge screens and approved branding will be added once Big Fish supplies them.' },
+  between: { t: 'Between sessions', b: 'Stay in touch all week.', d: 'Players see your tasks and can chat with you in the app.', s: ['coach-task', '@bullseye'], l: ['Chat with your players', 'Pending tasks from you on their home screen', 'A weekly tracker of the days they practiced'] },
+  jdc: { t: 'JDC challenge', b: 'The JDC practice routine, scored for you.', d: '33 targets in three sections: Shanghai 10–15, doubles round the board, then Shanghai 15–20.', s: ['jdc-play', 'jdc-complete', 'jdc-sections', 'jdc-stats'], l: ['Tap single, double, treble or miss for every dart', '+100 bonus points for every Shanghai', 'Your total against your previous best', 'Stats over your last 10, last 30 or all sessions'] },
 };
 const SETS = {
   players: { eyebrow: 'Built for players', left: ['ai', 'pro', 'live', 'daily', 'weekly'], right: ['games', 'codfather', 'checkout', 'plan', 'progress'], more: ['board', 'muscle'], phone: 'home' },
   coaches: { eyebrow: 'Built for coaches & academies', left: ['brand', 'dashboard', 'assign', 'cplan', 'groups'], right: ['follow', 'howai', 'between', 'games', 'jdc'], more: ['board', 'muscle'], phone: 'coach-dashboard' },
 };
 const STORIES = {
-  players: { eyebrow: 'For players', title: 'From one throw to real progress.', steps: [['Record a throw', 'Prop up your phone and throw a set.', 'live-scan'], ['Get real feedback', 'See what to fix in your technique.', 'ai-improve'], ['Do your daily task', 'Your plan tells you what to practise.', 'weekly-plan'], ['See your progress', 'Watch your rating and skills move.', 'progress']] },
+  players: { eyebrow: 'For players', title: 'From one throw to real progress.', steps: [['Record a throw', 'Prop up your phone and throw a set.', 'live-scan'], ['Get real feedback', 'See what to fix in your technique.', 'ai-improve'], ['Do your daily task', 'Your plan tells you what to practice.', 'weekly-plan'], ['See your progress', 'Watch your rating and skills move.', 'progress']] },
   coaches: { eyebrow: 'For coaches & academies', title: 'Your academy, running all week.', steps: [['Brand your app', 'Add your name and logo.', '@shepperton'], ['Invite your players', 'They join with your code.', 'coach-dashboard'], ['Assign the work', 'Pick a game, a duration and a note.', 'assign-task'], ['Follow every player', 'Ratings, skills and sessions.', 'player-details']] },
 };
+const isWide = (s) => s.startsWith('@') || s.startsWith('jdc-');
 const src = (s) => s.startsWith('@') ? `img/brand/${s.slice(1)}.webp` : `img/app/${s}.webp`;
 const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 const tile = (k) => `<button class="tile" type="button" data-feature="${k}"><span>${F[k].t}${F[k].soon ? '<small>Coming soon</small>' : ''}</span>${arrow}</button>`;
@@ -469,7 +472,7 @@ function render() {
   document.getElementById('steps').innerHTML = W.steps.map(([t, d], i) => `<button type="button" data-step="${i}" aria-pressed="${i === step}"><i>${i + 1}</i><span><b>${t}</b><span>${d}</span></span></button>`).join('');
   const [t, , img] = W.steps[step];
   const si = document.getElementById('story-img');
-  si.src = src(img); si.alt = t + ': app screen'; si.className = img.startsWith('@') ? 'wide' : '';
+  si.src = src(img); si.alt = t + ': app screen'; si.className = isWide(img) ? 'wide' : '';
   document.getElementById('story-tag').textContent = `Step ${step + 1} of ${W.steps.length}`;
   document.getElementById('prev').disabled = step === 0;
   document.getElementById('next').textContent = step === W.steps.length - 1 ? 'Start again ↺' : 'Next →';
@@ -495,7 +498,7 @@ document.querySelectorAll('[data-style]').forEach((b, _, all) => b.addEventListe
 let lastBtn = null;
 function openFeature(k, btn) {
   const f = F[k]; lastBtn = btn || null;
-  const shots = f.s.length ? `<div class="shots">${f.s.map((s) => `<img src="${src(s)}" alt="${f.t}: app screen" loading="lazy" class="${s.startsWith('@') ? 'wide' : ''}">`).join('')}</div>` : '<div class="shots" style="min-height:260px;align-items:center;color:var(--muted)">Screens to follow</div>';
+  const shots = f.s.length ? `<div class="shots">${f.s.map((s) => `<img src="${src(s)}" alt="${f.t}: app screen" class="${isWide(s) ? 'wide' : ''}">`).join('')}</div>` : '<div class="shots" style="min-height:260px;align-items:center;color:var(--muted)">Screens to follow</div>';
   document.getElementById('feat-body').innerHTML = `
     <div>
       <h2 id="feat-t">${f.t}</h2>

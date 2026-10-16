@@ -191,7 +191,11 @@
     .feat .desc { margin: 8px 0 0; color: var(--muted); }
     .feat ul { margin: 16px 0 0; padding-left: 20px; }
     .feat li { margin: 6px 0; }
-    .feat .shots { display: flex; gap: 10px; justify-content: center; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
+    .feat .shots { display: flex; align-items: flex-start; gap: 10px; justify-content: flex-start; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
+    .feat .shots > img:first-child { margin-left: auto; }
+    .feat .shots > img:last-child { margin-right: auto; }
+    .feat .shots.wrap { flex-wrap: wrap; justify-content: center; }
+    .feat .shots.wrap > img { margin: 0; }
     .feat .shots img { width: 190px; flex: none; border-radius: 16px; border: 5px solid #0e1630; cursor: zoom-in; }
     .feat .shots img.wide { width: 300px; border-radius: 10px; }
     .feat .shots img.tv { width: 100%; max-width: 560px; border-width: 6px; border-radius: 10px; }
@@ -243,7 +247,6 @@
       .venue-hero .txt, .host-cta .txt { padding: 22px; }
       dialog { max-width: 100vw; max-height: 100vh; height: 100%; border-radius: 0; margin: 0; }
       .feat .shots { justify-content: flex-start; }
-      .feat .shots:has(> img:only-child) { justify-content: center; }
       .bottom-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: #fff; border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
       .bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; border: 0; background: none; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; }
       .bottom-nav svg { width: 22px; height: 22px; }
@@ -350,13 +353,13 @@
       <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Photos from Big Fish Darts League nights">
         <div class="track" id="track">
           <img src="img/photos/players-board.webp" alt="League players at a Big Fish Darts branded board">
-          <img src="img/photos/league-night-room.webp" alt="A full room of players at a Big Fish Darts League night" loading="lazy" style="object-position: center 60%">
-          <img src="img/photos/team-photo.webp" alt="Three Big Fish Darts League players in front of a dartboard" loading="lazy" style="object-position: center 30%">
-          <img src="img/photos/p32.webp" alt="League players at the bar of the White Lion" loading="lazy">
-          <img src="img/photos/p64.webp" alt="Players sharing a drink between matches" loading="lazy">
-          <img src="img/photos/player-throw.webp" alt="A Big Fish Darts League player throwing at the oche" loading="lazy" style="object-position: center 35%">
-          <img src="img/photos/p43.webp" alt="A player collecting darts from a Big Fish board" loading="lazy">
-          <img src="img/photos/first-league-night.webp" alt="Players at the first ever Big Fish Darts League night" loading="lazy" style="object-position: center 62%">
+          <img src="img/photos/league-night-room.webp" alt="A full room of players at a Big Fish Darts League night" style="object-position: center 60%">
+          <img src="img/photos/team-photo.webp" alt="Three Big Fish Darts League players in front of a dartboard" style="object-position: center 30%">
+          <img src="img/photos/p32.webp" alt="League players at the bar of the White Lion">
+          <img src="img/photos/p64.webp" alt="Players sharing a drink between matches">
+          <img src="img/photos/player-throw.webp" alt="A Big Fish Darts League player throwing at the oche" style="object-position: center 35%">
+          <img src="img/photos/p43.webp" alt="A player collecting darts from a Big Fish board">
+          <img src="img/photos/first-league-night.webp" alt="Players at the first ever Big Fish Darts League night" style="object-position: center 62%">
         </div>
         <button class="car-btn prev" type="button" aria-label="Previous photo">‹</button>
         <button class="car-btn next" type="button" aria-label="Next photo">›</button>
@@ -376,10 +379,10 @@
 
     <h2 style="margin-top: 36px; font-size: 22px">How results look in the app</h2>
     <div class="grid-4" style="margin-top: 14px">
-      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/bracket.webp" alt="Tournament bracket with completed, live and upcoming matches" loading="lazy"></div></button></div><div class="txt"><h3>Brackets</h3><p>Completed, live and upcoming matches at a glance.</p></div></article>
-      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/rr-groups-ab.webp" alt="Round robin group table with legs won, legs lost and averages" loading="lazy"></div></button></div><div class="txt"><h3>Group tables</h3><p>Wins, legs and averages for every group.</p></div></article>
-      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/live-scoring.webp" alt="Live scoring screen for a two-player leg" loading="lazy"></div></button></div><div class="txt"><h3>Live scoring</h3><p>Every visit scored, with checkout suggestions.</p></div></article>
-      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/rumble-winner.webp" alt="Royal Rumble winner screen" loading="lazy"></div></button></div><div class="txt"><h3>Winners</h3><p>Champions crowned and recorded in the app.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/bracket.webp" alt="Tournament bracket with completed, live and upcoming matches"></div></button></div><div class="txt"><h3>Brackets</h3><p>Completed, live and upcoming matches at a glance.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/rr-groups-ab.webp" alt="Round robin group table with legs won, legs lost and averages"></div></button></div><div class="txt"><h3>Group tables</h3><p>Wins, legs and averages for every group.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/live-scoring.webp" alt="Live scoring screen for a two-player leg"></div></button></div><div class="txt"><h3>Live scoring</h3><p>Every visit scored, with checkout suggestions.</p></div></article>
+      <article class="card shot-card"><div class="shot"><button class="zoom" type="button" aria-label="Enlarge screenshot"><div class="device"><img src="img/app/rumble-winner.webp" alt="Royal Rumble winner screen"></div></button></div><div class="txt"><h3>Winners</h3><p>Champions crowned and recorded in the app.</p></div></article>
     </div>
     <div style="margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px">
       <button class="btn btn-primary" type="button" data-open="dlg-app">Follow live scores in the app</button>
@@ -685,7 +688,7 @@ const FEATURES = {
   scoring: { title: 'Scoring & match play', benefit: 'Keep your attention on the board.', desc: 'Simple scoring, checkout guidance and connected match results.', shots: ['live-scoring'], bullets: ['Match settings', 'Scoring and checkout guidance', 'Recorded results and stats'] },
   stats: { title: 'Player statistics', benefit: 'Know your game, number by number.', desc: 'Every match feeds your personal stats.', shots: ['stats-overview', 'stats-scoring', 'stats-checkouts', 'stats-doubles'], bullets: ['3-dart average, checkout % and leg difference', '100+, 140+ and 180 counts and first-9 average', 'Doubles hit and missed, shown on the board'] },
   night: { title: 'Run the night', benefit: 'The app keeps the night moving.', desc: 'Groups, brackets and results stay in one place.', shots: ['rr-groups-d', 'bracket'], bullets: ['Groups and brackets generated for you', 'Live, completed and upcoming matches at a glance', 'Results go straight into the rankings'] },
-  practice: { title: 'Practice & Codfather', benefit: 'Sharpen up between match nights.', desc: 'Arcade games for solo and group practice.', shots: ['arcade-hit20', 'arcade-killer'], bullets: ['Arcade games like Around the World and Killer', 'Practise on your own or with friends'], soon: 'Codfather screens will be added once Big Fish supplies them.' },
+  practice: { title: 'Practice & Codfather', benefit: 'Sharpen up between match nights.', desc: 'Arcade games for solo and group practice.', shots: ['arcade-hit20', 'arcade-killer'], bullets: ['Arcade games like Around the World and Killer', 'Practice on your own or with friends'], soon: 'Codfather screens will be added once Big Fish supplies them.' },
   real: { title: 'Real venues & players', benefit: 'Real nights at real venues.', desc: 'From the Big Fish Darts League photoshoot.', photos: ['players-board', 'p32', 'p64', 'p43', 'p22', 'p58'], bullets: [] },
 };
 const LEFT = ['formats', 'leagues', 'kiosk', 'tv', 'fees'];
@@ -698,8 +701,8 @@ let lastFeatureBtn = null;
 function openFeature(k, btn) {
   const f = FEATURES[k]; lastFeatureBtn = btn || null;
   const media = f.photos
-    ? `<div class="shots" style="flex-wrap:wrap">${f.photos.map((p) => `<img class="wide" src="img/photos/${p}.webp" alt="Big Fish Darts League photo" loading="lazy">`).join('')}</div>`
-    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: ${f.wide ? 'live tournament on a venue TV' : 'app screen'}" loading="lazy" class="${f.wide ? 'tv' : ''}">`).join('')}</div>` : '';
+    ? `<div class="shots wrap">${f.photos.map((p) => `<img class="wide" src="img/photos/${p}.webp" alt="Big Fish Darts League photo">`).join('')}</div>`
+    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: ${f.wide ? 'live tournament on a venue TV' : 'app screen'}" class="${f.wide ? 'tv' : ''}">`).join('')}</div>` : '';
   document.getElementById('feat-body').innerHTML = `
     <div>
       <h2 id="feat-t">${f.title}</h2>
