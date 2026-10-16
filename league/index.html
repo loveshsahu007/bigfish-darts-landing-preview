@@ -177,8 +177,7 @@
     .phone-stage { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 18px; padding: 22px; border-radius: var(--r); background: var(--soft); }
     .phone { width: min(230px, 100%); border-radius: 30px; border: 8px solid #0e1630; background: #0e1630; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(14,22,48,0.55); }
     .phone img { width: 100%; }
-    .more { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
-    .more .btn { min-width: 240px; }
+    .more { margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 
     /* Feature panel (dialog) */
     dialog { border: 0; padding: 0; border-radius: 16px; width: 100%; max-width: min(880px, calc(100vw - 24px)); max-height: calc(100vh - 32px); color: var(--ink); box-shadow: 0 30px 80px rgba(14,22,48,0.45); }
@@ -195,6 +194,8 @@
     .feat .shots { display: flex; gap: 10px; justify-content: center; padding: 16px; border-radius: var(--r); background: var(--soft); overflow-x: auto; }
     .feat .shots img { width: 190px; flex: none; border-radius: 16px; border: 5px solid #0e1630; cursor: zoom-in; }
     .feat .shots img.wide { width: 300px; border-radius: 10px; }
+    .feat .shots img.tv { width: 100%; max-width: 560px; border-width: 6px; border-radius: 10px; }
+    .feat .shots:has(img.tv) { align-items: center; min-height: 100%; }
     .feat .film { margin-top: 20px; }
     .feat .film iframe { width: 100%; aspect-ratio: 9 / 16; max-height: 520px; border: 0; border-radius: var(--r); background: #0e1630; }
     .soon { margin-top: 16px; padding: 14px 16px; border-radius: 10px; background: #fff7e0; color: #6a4e00; font-size: 14px; }
@@ -219,9 +220,10 @@
       .search .btn { grid-column: 1 / -1; }
       .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .steps { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-      .explore { grid-template-columns: minmax(0, 1fr); }
-      .explore .phone-stage { order: -1; }
-      .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .explore { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .explore .phone-stage { order: -1; grid-column: 1 / -1; margin-bottom: 6px; }
+      .tiles { display: contents; }
+      .more .btn { padding-inline: 10px; font-size: 14px; white-space: normal; line-height: 1.25; }
       .tile { min-height: 58px; font-size: 15px; padding: 0 14px; }
       .venue-hero, .host-cta, .two { grid-template-columns: minmax(0, 1fr); }
       .feat { grid-template-columns: minmax(0, 1fr); padding: 18px; }
@@ -241,6 +243,7 @@
       .venue-hero .txt, .host-cta .txt { padding: 22px; }
       dialog { max-width: 100vw; max-height: 100vh; height: 100%; border-radius: 0; margin: 0; }
       .feat .shots { justify-content: flex-start; }
+      .feat .shots:has(> img:only-child) { justify-content: center; }
       .bottom-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: #fff; border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
       .bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; border: 0; background: none; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; }
       .bottom-nav svg { width: 22px; height: 22px; }
@@ -675,8 +678,8 @@ const FEATURES = {
   formats: { title: 'Tournament formats', benefit: 'Pick the format that suits your night.', desc: 'Groups, brackets and draws are set up for you.', shots: ['bracket', 'rr-groups-ab', 'rumble-draw'], bullets: ['Knockout and round robin, with groups and a knockout stage', 'Royal Rumble: random draws until one champion is left', 'Singles or pairs'] },
   leagues: { title: 'Premier Leagues & Series', benefit: 'Weekly fixtures that build to a finals night.', desc: 'Find a league near you and play it week by week.', shots: ['join-league'], bullets: ['Find a league by distance and day', 'Fixtures and standings every week', 'The top four qualify for the finals'] },
   kiosk: { title: 'Kiosk & social games', benefit: 'Turn up, pick a game, play.', desc: 'Big Fish Social runs casual games for groups and guests.', shots: ['social-party', 'social-games', 'arcade-hit20', 'arcade-killer'], bullets: ['Singles or doubles, guests welcome', 'X01, Killer, Around the World, Halve It, Cricket, Royal Rumble and Chase', 'A session leaderboard with gold, silver and bronze'] },
-  tv: { title: 'TV & Broadcast', benefit: 'Put the night on the big screen.', desc: '', shots: [], bullets: [], soon: 'A real TV screenshot or clip from Big Fish will be added here.' },
-  fees: { title: 'Entry fees & payments', benefit: 'Every event shows its entry clearly.', desc: 'Events can be free or pay at the door.', shots: [], bullets: [], soon: 'Big Fish will supply the approved wording on entry fees, payments and venue billing.' },
+  tv: { title: 'TV & Broadcast', benefit: 'Put the night on the big screen.', desc: 'Every tournament and league comes with a free TV link. Share it around the venue or watch from home.', shots: ['tv-broadcast'], wide: true, bullets: ['Live scores for the match in play', 'Top 10 averages and highest checkouts', 'Live event stats and the latest results', 'Free with every tournament and league'] },
+  fees: { title: 'Entry fees & payments', benefit: 'Take entry fees your way.', desc: 'Big Fish Darts League can handle all payments and entry fees for you, for a 10% fee.', shots: ['players-checkin'], bullets: ['Players pay before the night, on the door, or a mix of both', 'A tick box next to every player for payments and collections', 'Built into every tournament'] },
   joining: { title: 'Joining an event', benefit: 'Find it, join it, turn up.', desc: 'Players request a place in the app or from a shared link.', shots: ['join-league', 'promo-whatsapp'], bullets: ['Find events near you', 'Request your place, with reserves when an event is full', 'Check in on the night'] },
   promote: { title: 'Promote your tournament', benefit: 'Fill your board without extra work.', desc: 'Each event gets its own promotion materials.', shots: ['promo-banner', 'promo-whatsapp'], bullets: ['A printable event banner', 'A WhatsApp-ready message with a join link', 'Listed in the app and on this website'] },
   scoring: { title: 'Scoring & match play', benefit: 'Keep your attention on the board.', desc: 'Simple scoring, checkout guidance and connected match results.', shots: ['live-scoring'], bullets: ['Match settings', 'Scoring and checkout guidance', 'Recorded results and stats'] },
@@ -696,7 +699,7 @@ function openFeature(k, btn) {
   const f = FEATURES[k]; lastFeatureBtn = btn || null;
   const media = f.photos
     ? `<div class="shots" style="flex-wrap:wrap">${f.photos.map((p) => `<img class="wide" src="img/photos/${p}.webp" alt="Big Fish Darts League photo" loading="lazy">`).join('')}</div>`
-    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: app screen" loading="lazy" class="">`).join('')}</div>` : '';
+    : f.shots.length ? `<div class="shots">${f.shots.map((s) => `<img src="img/app/${s}.webp" alt="${f.title}: ${f.wide ? 'live tournament on a venue TV' : 'app screen'}" loading="lazy" class="${f.wide ? 'tv' : ''}">`).join('')}</div>` : '';
   document.getElementById('feat-body').innerHTML = `
     <div>
       <h2 id="feat-t">${f.title}</h2>
