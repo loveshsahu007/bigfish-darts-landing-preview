@@ -157,7 +157,8 @@
     .video .cap { position: absolute; z-index: 1; left: 16px; right: 16px; bottom: 14px; text-align: left; }
     .video .cap b { display: block; font-size: 20px; }
     .video .cap span { font-size: 13px; opacity: 0.85; }
-    .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video iframe, .video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #0e1630; }
+    .video video { object-fit: cover; }
     .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
     .gallery button { padding: 0; border: 0; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; cursor: zoom-in; background: var(--navy); }
     .gallery img { width: 100%; height: 100%; object-fit: cover; }
@@ -409,11 +410,12 @@
     <div class="two" style="margin-top: 36px; align-items: start">
       <div>
         <h2>Hear it from the pub</h2>
-        <p class="lede">See a Big Fish Darts League night at a real venue.</p>
+        <p class="lede">Venue owners and players on what Big Fish Darts League has done for their nights.</p>
         <div class="video" style="margin-top: 16px; max-width: 360px">
-          <button data-video="1XcL3ev6wZBAByfEG-SUGBGuQitfBIqiR" aria-label="Play video: Big Fish Darts League for pubs and venues"><img src="img/video/pub.webp" alt=""><span class="play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 14 14"><path d="M3.5 1.5v11l9-5.5z" fill="#fff"/></svg></span><span class="cap"><b>Big Fish for pubs</b><span>Promo film</span></span></button>
+          <video controls playsinline preload="none" poster="video/testimonials-poster.webp" aria-label="Venue owners and players talk about Big Fish Darts League">
+            <source src="video/testimonials.mp4" type="video/mp4">
+          </video>
         </div>
-        <p class="small" style="margin-top: 8px">The venue-owner testimonial film goes here when it's ready.</p>
       </div>
       <div>
         <h2>Promotion, done for you</h2>
